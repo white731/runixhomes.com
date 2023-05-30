@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GoogleButton from "react-google-button";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Box, Button, Typography } from "@mui/material";
 
 type User = {
   name: string | null;
@@ -64,22 +65,33 @@ const Login = (props: Props) => {
   };
 
   const showUser = () => {
-    let name = localStorage.getItem("name");
-    let email = localStorage.getItem("email");
+    // let name = localStorage.getItem("name");
+    // let email = localStorage.getItem("email");
 
     return (
-      <div>
-        <h1>{user?.name}</h1>
-        <p>{user?.email}</p>
-      </div>
+      <Box sx={{ textAlign: "center" }}>
+        <Typography variant="h3">{user?.name}</Typography>
+        <Typography>{user?.email}</Typography>
+      </Box>
     );
   };
 
   return (
     <>
-      <GoogleButton onClick={signIn} />
-      <button onClick={() => logout()}>Logout</button>
-      {showUser()}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          margin: "20px",
+        }}
+      >
+        <GoogleButton onClick={signIn} />
+        <Button sx={{ marginTop: "20px" }} onClick={() => logout()}>
+          Logout
+        </Button>
+        {showUser()}
+      </Box>
     </>
   );
 };
