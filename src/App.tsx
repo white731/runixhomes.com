@@ -7,6 +7,8 @@ import Login from "./components/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
+import { createTheme, ThemeProvider } from "@mui/material";
+import Signup from "./components/Signup";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,16 +26,44 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#393F67",
+    },
+    secondary: {
+      main: "#F7F6F1",
+    },
+  },
+  typography: {
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+});
+
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login/" element={<Login app={app} />} />
-        </Routes>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="login/" element={<Login app={app} />} />
+            <Route path="signup/:guid" element={<Signup />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   );
 };
