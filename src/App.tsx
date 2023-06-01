@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Signup from "./components/Signup";
+import Footer from "./components/Footer";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,6 +37,24 @@ const theme = createTheme({
     },
   },
   typography: {
+    h1: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
+    h2: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
+    h3: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
+    h4: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
+    h5: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
+    h6: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
     fontFamily: [
       "-apple-system",
       "BlinkMacSystemFont",
@@ -62,6 +81,7 @@ const App = () => {
             <Route path="login/" element={<Login app={app} />} />
             <Route path="signup/:guid" element={<Signup />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </ThemeProvider>
     </>

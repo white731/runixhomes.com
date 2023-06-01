@@ -50,7 +50,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -61,16 +61,15 @@ const Navbar = () => {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "typography.fontFamily",
+              fontFamily: "Adobe Garamond Pro",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "secondary.main",
               textDecoration: "none",
             }}
           >
-            BRAND
+            RUNIX HOME SERVICES
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -110,6 +109,7 @@ const Navbar = () => {
               ))}
             </Menu>
           </Box>
+          {/* MOBILE */}
           <Typography
             variant="h5"
             noWrap
@@ -119,14 +119,14 @@ const Navbar = () => {
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              // fontFamily: "monospace",
+              fontFamily: "Adobe Garamond Pro",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            BRAND
+            RUNIX HOME SERVICES
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
