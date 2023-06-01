@@ -12,7 +12,7 @@ const WhySection = () => {
   return (
     <Box
       sx={{
-        background: "secondary.main",
+        backgroundColor: "secondary.main",
         width: "100%",
         paddingBottom: "100px",
         // height: "75vh",

@@ -12,10 +12,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
+import runixLogo200px from "../images/runixLogo200px.png";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
 const pages = [
   { name: "Home", path: "/" },
-  { name: "Login", path: "/login" },
+  // { name: "Login", path: "/login" },
+  { name: "Services", path: "/#services" },
+  { name: "Contact", path: "/#contact" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -45,12 +49,16 @@ const Navbar = () => {
   };
 
   const handleNavigateToPage = (page: string) => {
-    navigate(page);
+    window.location.replace(page);
     handleCloseNavMenu();
   };
 
+  const handleCallPhone = () => {
+    window.open("tel:+12082195001");
+  };
+
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ backgroundColor: "secondary.main" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -64,11 +72,11 @@ const Navbar = () => {
               fontFamily: "Adobe Garamond Pro",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "secondary.main",
+              color: "primary.main",
               textDecoration: "none",
             }}
           >
-            RUNIX HOME SERVICES
+            <img src={runixLogo200px} style={{ height: "40px" }} alt="logo" />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -77,7 +85,7 @@ const Navbar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="primary"
             >
               <ListIcon />
             </IconButton>
@@ -104,7 +112,9 @@ const Navbar = () => {
                   key={page.name}
                   onClick={() => handleNavigateToPage(page.path)}
                 >
-                  <Typography textAlign="center">{page.name}</Typography>
+                  <Typography sx={{ color: "primary.main" }} textAlign="center">
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -126,14 +136,14 @@ const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            RUNIX HOME SERVICES
+            <img src={runixLogo200px} style={{ height: "40px" }} alt="logo" />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page.name}
                 onClick={() => handleNavigateToPage(page.path)}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "primary.main", display: "block" }}
               >
                 {page.name}
               </Button>
@@ -141,32 +151,10 @@ const Navbar = () => {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleCallPhone} sx={{ p: 0 }}>
+                <LocalPhoneIcon />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>

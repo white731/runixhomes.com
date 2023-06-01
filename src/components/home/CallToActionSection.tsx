@@ -1,3 +1,4 @@
+import { ThemeContext } from "@emotion/react";
 import {
   Box,
   CardContent,
@@ -6,10 +7,12 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CustomButton } from "../../hooks/CustomButton";
 
 const CallToActionSection = () => {
+  const theme = useContext(ThemeContext);
   const navigate = useNavigate();
   return (
     <Box
@@ -32,7 +35,7 @@ const CallToActionSection = () => {
       >
         <Box sx={{ paddingTop: "20%", maxWidth: "50%", marginLeft: "10%" }}>
           <Typography
-            variant={"h3"}
+            variant={"h4"}
             sx={{
               color: "secondary.main",
               fontWeight: 700,
@@ -55,7 +58,7 @@ const CallToActionSection = () => {
         </Box>
         <CustomButton
           text="Get a Free Quote!"
-          handleClick={() => navigate("/login")}
+          handleClick={() => window.location.replace("/#contact")}
           customStyle={{
             marginLeft: "12%",
             marginTop: "10px",

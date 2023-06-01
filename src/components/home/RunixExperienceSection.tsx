@@ -125,8 +125,10 @@ const RunixExperienceSection = () => {
           </Box>
           <CustomButton
             text="Learn More"
-            handleClick={() => {}}
-            customStyle={{ maxWidth: 300 }}
+            handleClick={() => {
+              window.location.replace("/#contact");
+            }}
+            customStyle={{ maxWidth: 300, marginTop: "20px" }}
           />
         </Box>
       </Container>

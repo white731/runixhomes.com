@@ -18,6 +18,7 @@ import { grey } from "@mui/material/colors";
 const ServicesSection = () => {
   return (
     <Box
+      id="services"
       sx={{
         background: "rgba(57, 63, 103, 0.75)",
         width: "100%",
@@ -25,9 +26,9 @@ const ServicesSection = () => {
         paddingBottom: "50px",
       }}
     >
-      <Container>
+      <Container maxWidth="md">
         <Typography
-          variant="h2"
+          variant="h4"
           sx={{ textAlign: "center", color: "secondary.main", margin: "20px" }}
         >
           Services

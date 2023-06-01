@@ -2,7 +2,7 @@ import { Button, SxProps } from "@mui/material";
 
 type Props = {
   text: string;
-  handleClick: () => void;
+  handleClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   customStyle: any;
 };
 
