@@ -10,6 +10,8 @@ import Navbar from "./components/Navbar";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Signup from "./components/Signup";
 import Footer from "./components/Footer";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -68,22 +70,33 @@ const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(","),
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 640,
+      md: 1024,
+      lg: 1280,
+      xl: 1500,
+    },
+  },
 });
 
 const App = () => {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="login/" element={<Login app={app} />} />
-            <Route path="signup/:guid" element={<Signup />} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="login/" element={<Login app={app} />} />
+              <Route path="signup/:guid" element={<Signup />} />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </ThemeProvider>
+      </LocalizationProvider>
     </>
   );
 };
