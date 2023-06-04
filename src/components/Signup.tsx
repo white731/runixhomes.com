@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Autocomplete,
   Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -24,6 +25,8 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { additionalServices, services } from "../data/Services";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { customerServiceAgreement } from "./signup/customerAgreement";
+import { CustomButton } from "../hooks/CustomButton";
 
 const sampleAirtableProperties = [
   { label: "Main Office", address: "700 E 700 N" },
@@ -314,9 +317,38 @@ const Signup = () => {
             an annual committment.
           </Typography>
         </Box>
-        <Typography variant="h6" sx={{ marginTop: "40px" }}>
+        <Typography
+          variant="h6"
+          sx={{ marginTop: "40px", marginBottom: "20px" }}
+        >
           Customer Terms and Conditions
         </Typography>
+        <TextField
+          value={customerServiceAgreement}
+          multiline
+          rows={10}
+          sx={{ width: { xs: "300px", sm: "500px", md: "700px" } }}
+          defaultValue={customerServiceAgreement}
+        />
+        <FormControlLabel
+          label="By checking this box I agree to the terms and conditions outlined above"
+          control={<Checkbox />}
+        />
+        <Typography
+          variant="h6"
+          sx={{ marginTop: "40px", marginBottom: "5px" }}
+        >
+          Complete Signup
+        </Typography>
+        <Typography variant="caption" sx={{ textAlign: "center" }}>
+          Monthly payment charges will be set up after the completion of the
+          first visit. If you have any questions send us an email or contact us
+          at (208) 219-5001
+        </Typography>
+        <CustomButton
+          text="Submit"
+          customStyle={{ marginBottom: "30px", marginTop: "5px" }}
+        />
       </Container>
     </Box>
   );
