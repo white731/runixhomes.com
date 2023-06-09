@@ -13,6 +13,7 @@ import {
   CardMedia,
   Checkbox,
   Container,
+  duration,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -27,6 +28,9 @@ import { additionalServices, services } from "../data/Services";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { customerServiceAgreement } from "./signup/customerAgreement";
 import { CustomButton } from "../hooks/CustomButton";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { PropertyType } from "../types/Types";
 
 const sampleAirtableProperties = [
   { label: "Main Office", address: "700 E 700 N" },
@@ -34,6 +38,78 @@ const sampleAirtableProperties = [
 ];
 
 const Signup = () => {
+  const [property, setProperty] = useState<PropertyType>({
+    "Add Ons Monthly": 0,
+    "Add on Tasks": [],
+    Address: [],
+    City: [],
+    Customer: [],
+    "Customer Name": [],
+    Email: [],
+    "Essentials Monthly": 0,
+    "Essentials Tasks": [],
+    "Estimate #": 0,
+    "Estimate Link": "",
+    Estimates: [], // Assuming 'Estimates' is an array
+    "First Service": [],
+    "First Service Friendly": { error: "" },
+    "Healthy Home Monthly": 0,
+    "Healthy Home Tasks": [],
+    "Healthy Home Time Expected Quarter 1": 0,
+    "Healthy Home Time Expected Quarter 3": 0,
+    ID: "",
+    ItemTaskJoin: [],
+    "Items to Maintain": [],
+    "Phone Number": [],
+    "Property Name": "",
+    PropertyID: "",
+    Quotes: [],
+    Services: [],
+    State: [],
+    "Total Monthly": 0,
+    Type: [],
+    recordId: "",
+  });
+  const [availableDates, setAvailableDates] = useState([
+    {
+      Schedule: "Between Noon and 3pm",
+    },
+  ]);
+
+  const getPropertyByRecordID = async () => {
+    try {
+      const recordId = "rec5co1VjZYUpPlWs";
+      const response = await axios.get(
+        // `https://getpropertyfunction-ftozsj74aa-uc.a.run.app?recordId=${recordId}`
+        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyFunction?recordId=${recordId}`
+      );
+      console.log(response.data.fields);
+      setProperty(response.data.fields);
+    } catch (error) {}
+  };
+
+  const getAvailableDates = async () => {
+    try {
+      const res = await axios.get(
+        "http://127.0.0.1:5001/runix-home-services/us-central1/getAvailableDates"
+      );
+      setAvailableDates(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPropertyByRecordID();
+    getAvailableDates();
+  }, []);
+
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   const healthyHomeCard = () => {
     return (
       <Card
@@ -57,7 +133,9 @@ const Signup = () => {
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardHeader
               title="Healthy Home Package"
-              subheader={"$25.00 per Month"}
+              subheader={`${currencyFormatter.format(
+                property["Healthy Home Monthly"]
+              )} per Month`}
             ></CardHeader>
             <FormControlLabel
               label="Include in Plan"
@@ -158,6 +236,9 @@ const Signup = () => {
     );
   };
 
+  const propertyName = property ? property["Property Name"] : "";
+  const customerName = property ? property["Customer Name"][0] : "";
+
   return (
     <Box
       sx={{
@@ -174,33 +255,23 @@ const Signup = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6" sx={{ margin: "10px" }}>
-          Select your property
+        <Typography variant="h6" sx={{ marginTop: "10px" }}>
+          {customerName}
         </Typography>
-        <Autocomplete
-          disablePortal
-          options={sampleAirtableProperties}
-          sx={{ width: "300px" }}
-          renderInput={(params) => <TextField {...params} label="Properties" />}
-        />
-        <Typography variant="h6" sx={{ margin: "10px" }}>
+        <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+          {propertyName}
+        </Typography>
+        <Typography variant="h6" sx={{ margin: "10px", textAlign: "center" }}>
           Select a date and time for your first service.
         </Typography>
-        <DatePicker sx={{ width: "300px", marginBottom: "10px" }} />
-        <FormControl sx={{ width: "300px" }}>
+        <FormControl sx={{ width: "325px" }}>
           <InputLabel id="demo-simple-select-label">
-            Select a Timeframe
+            Select a Date & Time
           </InputLabel>
           <Select label="Select a timeframe">
-            <MenuItem value="Between 9 AM and Noon">
-              Between 9 AM and Noon
-            </MenuItem>
-            <MenuItem value="Between Noon and 3 PM">
-              Between Noon and 3 PM
-            </MenuItem>
-            <MenuItem value="Between 3 PM and 6 PM">
-              Between 3 PM and 6PM
-            </MenuItem>
+            {availableDates.map((x) => {
+              return <MenuItem value={x.Schedule}>{x.Schedule}</MenuItem>;
+            })}
           </Select>
         </FormControl>
         <Typography variant="h6" sx={{ marginTop: "40px" }}>

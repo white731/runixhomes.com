@@ -44,7 +44,7 @@ const WhySection = () => {
             <CardMedia
               component="img"
               height="194"
-              image="https://runixhomes.com/img/header-bg.jpg"
+              image="https://res.cloudinary.com/dndx9szw0/image/upload/v1686293805/Runix%20Website/AdobeStock_172206152_Preview_gjtz2c.jpg"
               alt="Paella dish"
             />
           </Card>

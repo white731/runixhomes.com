@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { additionalServices, services } from "../../data/Services";
-import { grey } from "@mui/material/colors";
 
 const ServicesSection = () => {
   return (
@@ -46,8 +45,8 @@ const ServicesSection = () => {
             expandIcon={<ExpandMoreIcon />}
           >
             <Typography variant="h5">
-              <strong>Health Home Package</strong> - Starting at{" "}
-              <strong style={{ color: "green" }}>$29.00</strong> per month
+              <strong>Healthy Home Package</strong> - Starting at{" "}
+              <strong>$39.00</strong> per month
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -107,10 +106,14 @@ const ServicesSection = () => {
           >
             <Typography variant="h5">
               <strong>Essentials Package</strong> - Starting at{" "}
-              <strong style={{ color: "green" }}> $19.00</strong> per month
+              <strong> $29.99</strong> per month
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
+            <Typography sx={{ textAlign: "center" }}>
+              All furnace filters, water filters and salt materials are included
+              in price.
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -188,17 +191,10 @@ const ServicesSection = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <CardMedia
-                        component="img"
-                        height="250"
-                        image={service.image}
-                        alt="Paella dish"
-                      />
                       <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                           <CardHeader
                             title={service.name}
-                            // subheader={`Price: ${service.memberPrice}/${service.nonMemberPrice}`}
                             subheader={
                               <>
                                 <Typography>

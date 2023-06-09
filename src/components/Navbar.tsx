@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import runixLogo200px from "../images/runixLogo200px.png";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import ChatIcon from "@mui/icons-material/Chat";
+import EmailIcon from "@mui/icons-material/Email";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -55,6 +57,12 @@ const Navbar = () => {
 
   const handleCallPhone = () => {
     window.open("tel:+12082195001");
+  };
+
+  const handleSendSMS = () => {
+    window.open(
+      "sms:+12082195001?&body=I'm%20interested%20in%20learning%20more%20about%20services%20for%20my%20home."
+    );
   };
 
   return (
@@ -150,11 +158,9 @@ const Navbar = () => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleCallPhone} sx={{ p: 0 }}>
-                <LocalPhoneIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleCallPhone} sx={{ p: 0, color: "black" }}>
+              <LocalPhoneIcon />
+            </IconButton>
           </Box>
         </Toolbar>
       </Container>

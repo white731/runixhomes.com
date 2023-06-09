@@ -19,7 +19,8 @@ const CallToActionSection = () => {
       sx={{
         width: "100%",
         height: "75vh",
-        backgroundImage: "url(https://runixhomes.com/img/header-bg.jpg)",
+        backgroundImage:
+          "url(https://res.cloudinary.com/dndx9szw0/image/upload/v1686290059/Runix%20Website/pexels-binyamin-mellish-186077-1_zsowor.jpg)",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundSize: "cover",
@@ -58,7 +59,11 @@ const CallToActionSection = () => {
         </Box>
         <CustomButton
           text="Get a Free Quote!"
-          handleClick={() => window.location.replace("/#contact")}
+          handleClick={() =>
+            window.location.replace(
+              "sms:+12082195001?&body=I'm%20interested%20in%20learning%20more%20about%20services%20for%20my%20home."
+            )
+          }
           customStyle={{
             marginLeft: "12%",
             marginTop: "10px",

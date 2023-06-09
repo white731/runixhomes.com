@@ -52,8 +52,8 @@ const RunixExperienceSection = () => {
             <CardMedia
               component="img"
               height="200"
-              image="https://runixhomes.com/img/header-bg.jpg"
-              alt="Paella dish"
+              image="https://res.cloudinary.com/dndx9szw0/image/upload/v1686293467/Runix%20Website/AdobeStock_455087174_1_jgsneq.jpg"
+              alt="Man Shaking Hands"
             />
           </Card>
           <Box sx={{ width: { md: "45%" }, margin: "3%" }}>
@@ -83,8 +83,8 @@ const RunixExperienceSection = () => {
             <CardMedia
               component="img"
               height="200"
-              image="https://runixhomes.com/img/header-bg.jpg"
-              alt="Paella dish"
+              image="https://res.cloudinary.com/dndx9szw0/image/upload/v1686295175/Runix%20Website/Man_choosing_services_xpu7uc.png"
+              alt="Choosing Services"
             />
           </Card>
           <Box sx={{ width: { md: "45%" }, margin: "3%" }}>
@@ -111,8 +111,8 @@ const RunixExperienceSection = () => {
             <CardMedia
               component="img"
               height="200"
-              image="https://runixhomes.com/img/header-bg.jpg"
-              alt="Paella dish"
+              image="https://res.cloudinary.com/dndx9szw0/image/upload/v1686295308/Runix%20Website/AdobeStock_307376258_Preview_ioa9ws.jpg"
+              alt="Woman Relaxing"
             />
           </Card>
           <Box sx={{ width: { md: "45%" }, margin: "3%" }}>
@@ -126,7 +126,9 @@ const RunixExperienceSection = () => {
           <CustomButton
             text="Learn More"
             handleClick={() => {
-              window.location.replace("/#contact");
+              window.open(
+                "sms:+12082195001?&body=I'm%20interested%20in%20learning%20more%20about%20services%20for%20my%20home."
+              );
             }}
             customStyle={{ maxWidth: 300, marginTop: "20px" }}
           />

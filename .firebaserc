@@ -1,5 +1,15 @@
 {
   "projects": {
-    "default": "authentication-example-3107a"
-  }
+    "default": "runix-home-services"
+  },
+  "targets": {
+    "runix-home-services": {
+      "hosting": {
+        "runixhomesv2": [
+          "runixhomes-1"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

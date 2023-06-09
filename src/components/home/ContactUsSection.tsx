@@ -54,7 +54,7 @@ const ContactUsSection = () => {
   const postNewLead = async (data: FormType) => {
     try {
       let res = await axios.post(
-        "https://us-central1-runix-home-services.cloudfunctions.net/postLead",
+        "https://postlead-ftozsj74aa-uc.a.run.app",
         data
       );
       setSubmitResult(res.data);
@@ -75,7 +75,7 @@ const ContactUsSection = () => {
       sx={{
         backgroundColor: "secondary.main",
         width: "100%",
-        paddingBottom: "100px",
+        paddingBottom: "200px",
       }}
     >
       <Container
