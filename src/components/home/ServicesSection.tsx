@@ -128,6 +128,7 @@ const ServicesSection = () => {
                   return (
                     <>
                       <Card
+                        key={service.name}
                         sx={{
                           margin: "10px",
                           width: "225px",
@@ -185,6 +186,7 @@ const ServicesSection = () => {
                 return (
                   <>
                     <Card
+                      key={service.name}
                       sx={{
                         margin: "10px",
                         width: "225px",

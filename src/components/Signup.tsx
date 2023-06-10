@@ -31,6 +31,7 @@ import { CustomButton } from "../hooks/CustomButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PropertyType } from "../types/Types";
+import { useParams } from "react-router-dom";
 
 const sampleAirtableProperties = [
   { label: "Main Office", address: "700 E 700 N" },
@@ -38,6 +39,8 @@ const sampleAirtableProperties = [
 ];
 
 const Signup = () => {
+  const { propertyid } = useParams();
+
   const [property, setProperty] = useState<PropertyType>({
     "Add Ons Monthly": 0,
     "Add on Tasks": [],
@@ -76,12 +79,41 @@ const Signup = () => {
     },
   ]);
 
+  const initialFormStates = additionalServices.map((service) => ({
+    name: service.name,
+    selectedAddon: 0,
+    textFieldValue: 0,
+  }));
+
+  const [selectedAddons, setSelectedAddons] = useState(initialFormStates);
+
+  const handleSelectChange = (index: number, value: number) => {
+    // Create a copy of the form states array
+    const updatedFormStates = [...selectedAddons];
+    // Update the selectedAddon value for the specific form
+    updatedFormStates[index].selectedAddon = value;
+    // Update the state variable
+    console.log(updatedFormStates);
+    setSelectedAddons(updatedFormStates);
+  };
+
+  const handleTextFieldChange = (index: number, value: number) => {
+    // Create a copy of the form states array
+    const updatedFormStates = [...selectedAddons];
+    // Update the textFieldValue for the specific form
+    updatedFormStates[index].textFieldValue = value;
+    // Update the state variable
+
+    console.log(updatedFormStates);
+    setSelectedAddons(updatedFormStates);
+  };
+
   const getPropertyByRecordID = async () => {
     try {
       const recordId = "rec5co1VjZYUpPlWs";
       const response = await axios.get(
         // `https://getpropertyfunction-ftozsj74aa-uc.a.run.app?recordId=${recordId}`
-        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyFunction?recordId=${recordId}`
+        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyFunction?recordId=${propertyid}`
       );
       console.log(response.data.fields);
       setProperty(response.data.fields);
@@ -109,6 +141,10 @@ const Signup = () => {
     style: "currency",
     currency: "USD",
   });
+
+  const total = currencyFormatter.format(
+    property["Healthy Home Monthly"] + property["Essentials Monthly"]
+  );
 
   const healthyHomeCard = () => {
     return (
@@ -158,15 +194,9 @@ const Signup = () => {
               <Typography>Summary of Services</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {services
-                .filter((x) => x.package !== "essentials")
-                .map((service) => {
-                  return (
-                    <Typography variant="body2">
-                      • {service.name} - {service.frequency}
-                    </Typography>
-                  );
-                })}
+              {property["Healthy Home Tasks"].map((service) => {
+                return <Typography variant="body2">• {service}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
         </CardActionArea>
@@ -197,7 +227,9 @@ const Signup = () => {
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardHeader
               title="Essentials Package"
-              subheader={"$19.99 per Month"}
+              subheader={`${currencyFormatter.format(
+                property["Essentials Monthly"]
+              )} per Month`}
             ></CardHeader>
             <FormControlLabel
               label="Include in Plan"
@@ -220,15 +252,9 @@ const Signup = () => {
               <Typography>Summary of Services</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {services
-                .filter((x) => x.package === "essentials")
-                .map((service) => {
-                  return (
-                    <Typography variant="body2">
-                      • {service.name} - {service.frequency}
-                    </Typography>
-                  );
-                })}
+              {property["Essentials Tasks"].map((service) => {
+                return <Typography variant="body2">• {service}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
         </CardActionArea>
@@ -335,7 +361,7 @@ const Signup = () => {
               Price
             </Typography>
           </Box>
-          {additionalServices.map((service) => {
+          {additionalServices.map((service, index) => {
             return (
               <Box
                 sx={{
@@ -348,6 +374,9 @@ const Signup = () => {
                 <Select
                   defaultValue={0}
                   size="small"
+                  onChange={(e: any) => {
+                    handleSelectChange(index, e.target.value);
+                  }}
                   sx={{ width: { xs: "114px", sm: "200px" } }}
                 >
                   <MenuItem value={1}>Annually</MenuItem>
@@ -357,8 +386,12 @@ const Signup = () => {
                 </Select>
                 <TextField
                   defaultValue={0}
+                  value={selectedAddons[index].textFieldValue}
                   size="small"
                   sx={{ width: "50px", margin: "3px" }}
+                  onChange={(e: any) => {
+                    handleTextFieldChange(index, e.target.value);
+                  }}
                 />
                 <Typography
                   sx={{ width: { xs: "125px", sm: "200px" }, margin: "3px" }}
@@ -381,7 +414,7 @@ const Signup = () => {
           }}
         >
           <Typography variant="h6" sx={{ marginTop: "40px" }}>
-            Total: <strong>$65.00</strong> per Month
+            Total: <strong>{total}</strong> per Month
           </Typography>
           <Typography variant="caption" sx={{ textAlign: "center" }}>
             *Note that the amount displayed above represents a monthly price for
