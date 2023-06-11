@@ -265,7 +265,7 @@ const Signup = () => {
       <Card
         sx={{
           margin: "10px",
-          width: "225px",
+          width: "300px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -328,7 +328,7 @@ const Signup = () => {
       <Card
         sx={{
           margin: "10px",
-          width: "225px",
+          width: "300px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",

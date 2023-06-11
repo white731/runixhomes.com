@@ -161,12 +161,6 @@ export const additionalServices = [
     image: "#",
   },
   {
-    name: "Clean resin in water softener",
-    memberPrice: 23.5,
-    nonMemberPrice: 32.0,
-    image: "#",
-  },
-  {
     name: "Clean out dishwasher filter (easy Access)",
     memberPrice: 10.0,
     nonMemberPrice: 14.0,
@@ -194,18 +188,6 @@ export const additionalServices = [
     name: "Clean out washing machine drain filter (limited access)",
     memberPrice: 45.0,
     nonMemberPrice: 61.0,
-    image: "#",
-  },
-  {
-    name: "Patch and Paint touch ups on walls**",
-    memberPrice: 30.0,
-    nonMemberPrice: 41.0,
-    image: "#",
-  },
-  {
-    name: "Vacuum out vent below fireplace",
-    memberPrice: 5.0,
-    nonMemberPrice: 7.0,
     image: "#",
   },
   {
@@ -240,14 +222,8 @@ export const additionalServices = [
   },
   {
     name: "Wipe down glass and vacuum out fireplace",
-    memberPrice: 30.0,
-    nonMemberPrice: 41.0,
-    image: "#",
-  },
-  {
-    name: "Blow Out Sprinklers",
-    memberPrice: 30.0,
-    nonMemberPrice: 41.0,
+    memberPrice: 40.0,
+    nonMemberPrice: 52.0,
     image: "#",
   },
   {
@@ -260,30 +236,6 @@ export const additionalServices = [
     name: "Vacuum out ash from Fireplace",
     memberPrice: 15.0,
     nonMemberPrice: 20.0,
-    image: "#",
-  },
-  {
-    name: "Spring Service for Sprinklers**",
-    memberPrice: 15.0,
-    nonMemberPrice: 20.0,
-    image: "#",
-  },
-  {
-    name: "Nozzle and Venturi Maintenance for Water Softener",
-    memberPrice: 15.0,
-    nonMemberPrice: 20.0,
-    image: "#",
-  },
-  {
-    name: "Change Humidifier Water Panel or Steam Canister",
-    memberPrice: 110.0,
-    nonMemberPrice: 149.0,
-    image: "#",
-  },
-  {
-    name: "Change Air Cleaner Media for Humidifier",
-    memberPrice: 135.0,
-    nonMemberPrice: 182.0,
     image: "#",
   },
   {
