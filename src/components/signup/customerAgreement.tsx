@@ -66,7 +66,7 @@ This contract is valid for a term of 1 year from the date of signing. Either par
 
 Either party may terminate this contract for cause by providing written notice to the other party specifying the cause for termination. The terminating party must allow the other party a reasonable opportunity to cure the cause for termination. If the cause for termination is not cured within a reasonable time period, the terminating party may terminate the contract.
 
-The customer may terminate this contract prior to the end of the contract term by submitting a written termination request via email or mail. Early termination of the contract will result in a fee equal to 50% of one of the service charges. For example, if the service contract is $200 per quarter, an early termination fee of $100 will be charged.
+The customer may terminate this contract prior to the end of the contract term by submitting a written termination request via email or mail. Early termination of the contract will result in a fee equal to $250.
 
 The Service Provider reserves the right to terminate this contract immediately if the customer fails to make payment in accordance with the payment terms outlined herein.
 

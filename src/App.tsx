@@ -12,6 +12,7 @@ import Signup from "./components/Signup";
 import Footer from "./components/Footer";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AfterSignUp } from "./components/AfterSignUp";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -92,6 +93,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="login/" element={<Login app={app} />} />
               <Route path="signup/:propertyid" element={<Signup />} />
+              <Route path="signup/complete" element={<AfterSignUp />} />
             </Routes>
             <Footer />
           </BrowserRouter>
