@@ -103,7 +103,7 @@ const Signup = () => {
   const initialFormStates = additionalServices.map((service) => ({
     name: service.name,
     quantity: 0,
-    textFieldValue: 0,
+    textFieldValue: 1,
     memberPrice: service.memberPrice,
     nonMemberPrice: service.nonMemberPrice,
     result: 0,
@@ -405,7 +405,7 @@ const Signup = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6" sx={{ marginTop: "10px" }}>
+        <Typography variant="h4" sx={{ marginTop: "10px" }}>
           {customerName}
         </Typography>
         <Typography variant="h6" sx={{ marginBottom: "10px" }}>
@@ -442,11 +442,32 @@ const Signup = () => {
           {healthyHomeCard()}
           {essentialsCard()}
         </Box>
-        <Typography variant="h6" sx={{ marginTop: "40px" }}>
-          Additional Services
-        </Typography>
+        <Container maxWidth="sm">
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: "center",
+              marginTop: "40px",
+              marginBottom: "20px",
+            }}
+          >
+            Additional Services
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ textAlign: "center", padding: "10px" }}
+          >
+            Choose from the list below any additional services you would like to
+            have done on your home. You can choose the frequency of the service
+            as well as how many items you have. For example, If you have 6
+            Exterior lights that you'd like cleaned twice a year, select
+            Semi-Annually for "How Often" and "6" for "How many" next to the
+            "Clean exterior lights" option.
+          </Typography>
+        </Container>
         <Box
           sx={{
+            marginTop: "20px",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
@@ -509,13 +530,19 @@ const Signup = () => {
                 <MenuItem key="1" value={1}>
                   Annually
                 </MenuItem>
-                <MenuItem key="2" value={4}>
+                <MenuItem key="2" value={2}>
+                  Semi-Annually
+                </MenuItem>
+                <MenuItem key="3" value={4}>
                   Quarterly
                 </MenuItem>
-                <MenuItem key="3" value={12}>
+                <MenuItem key="4" value={12}>
                   Monthly
                 </MenuItem>
-                <MenuItem key="4" value={0}>
+                <MenuItem key="5" value={1}>
+                  One Time
+                </MenuItem>
+                <MenuItem key="6" value={0}>
                   None
                 </MenuItem>
               </Select>
