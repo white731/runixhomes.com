@@ -204,7 +204,7 @@ const Signup = () => {
     };
 
     console.log(data);
-    // postNewCustomerSignUp(data);
+    postNewCustomerSignUp(data);
     navigate("/signup/complete");
   };
 
@@ -219,9 +219,10 @@ const Signup = () => {
 
   const getPropertyByRecordID = async () => {
     try {
+      //this is for testing purposes only
       const recordId = "rec5co1VjZYUpPlWs";
       const response = await axios.get(
-        `https://getpropertyfunction-ftozsj74aa-uc.a.run.app?recordId=${recordId}`
+        `https://getpropertyfunction-ftozsj74aa-uc.a.run.app?recordId=${propertyid}`
         // `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyFunction?recordId=${propertyid}`
       );
       console.log(response.data.fields);
@@ -234,7 +235,8 @@ const Signup = () => {
   const getAvailableDates = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:5001/runix-home-services/us-central1/getAvailableDates"
+        // "http://127.0.0.1:5001/runix-home-services/us-central1/getAvailableDates"
+        "https://getavailabledates-ftozsj74aa-uc.a.run.app"
       );
       setAvailableDates(res.data);
       console.log(res.data);
