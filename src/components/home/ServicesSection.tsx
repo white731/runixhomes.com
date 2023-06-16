@@ -10,11 +10,54 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { additionalServices, services } from "../../data/Services";
+import { useState } from "react";
+import { CustomButton } from "../../hooks/CustomButton";
 
 const ServicesSection = () => {
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  const initialFormStates = additionalServices.map((service) => ({
+    name: service.name,
+    interested: false,
+  }));
+
+  const [additionalServicesForm, setAdditionalServicesForm] = useState(
+    initialFormStates
+  );
+
+  const handleCheckboxChange = (index: number, value: boolean) => {
+    const updatedAdditionalServicesFormState = [...additionalServicesForm];
+    updatedAdditionalServicesFormState[index].interested = value;
+    setAdditionalServicesForm(updatedAdditionalServicesFormState);
+  };
+
+  const handleSendSMS = (text: string | undefined) => {
+    let servicesAsStrings = "%3A%0A";
+
+    additionalServicesForm
+      .filter((x) => x.interested == true)
+      .forEach((x) => {
+        servicesAsStrings = servicesAsStrings + `%0A${x.name}`;
+      });
+
+    let textMessage = text
+      ? text
+      : `Hi%20I%27m%20interested%20in%20learning%20more%20about%20${
+          servicesAsStrings !== "%3A%0A"
+            ? servicesAsStrings
+            : "additional services."
+        }`;
+    window.location.replace(`sms:+12082195001?&body=${textMessage}`);
+  };
+
   return (
     <Box
       id="services"
@@ -25,7 +68,7 @@ const ServicesSection = () => {
         paddingBottom: "50px",
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="xs">
         <Typography
           variant="h4"
           sx={{ textAlign: "center", color: "secondary.main", margin: "20px" }}
@@ -49,7 +92,7 @@ const ServicesSection = () => {
               <strong>$39.00</strong> per month
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails sx={{ padding: "16px 3px 16px 3px" }}>
             <Box
               sx={{
                 display: "flex",
@@ -65,24 +108,26 @@ const ServicesSection = () => {
                     <>
                       <Card
                         sx={{
-                          margin: "10px",
-                          width: "225px",
+                          margin: "3px",
+                          width: "140px",
                           justifyContent: "center",
                         }}
                       >
                         <CardMedia
                           component="img"
-                          height="250"
+                          height="150"
                           image={service.img}
                           alt="Paella dish"
                         />
-                        <CardContent>
+                        <CardContent sx={{ padding: "6px" }}>
                           <Box
                             sx={{ display: "flex", flexDirection: "column" }}
                           >
                             <CardHeader
+                              sx={{ padding: "0px" }}
                               title={service.name}
                               subheader={service.frequency}
+                              titleTypographyProps={{ fontSize: "1.1rem" }}
                             ></CardHeader>
                           </Box>
                         </CardContent>
@@ -90,6 +135,15 @@ const ServicesSection = () => {
                     </>
                   );
                 })}
+              <CustomButton
+                text="Learn More"
+                handleClick={() =>
+                  handleSendSMS(
+                    "Hi I'm interested in learning more about the Health Home Package."
+                  )
+                }
+                customStyle={{ marginTop: "10px" }}
+              />
             </Box>
           </AccordionDetails>
         </Accordion>
@@ -109,7 +163,7 @@ const ServicesSection = () => {
               <strong> $29.99</strong> per month
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails sx={{ padding: "16px 3px 16px 3px" }}>
             <Typography sx={{ textAlign: "center" }}>
               All furnace filters, water filters and salt materials are included
               in price.
@@ -155,6 +209,15 @@ const ServicesSection = () => {
                     </>
                   );
                 })}
+              <CustomButton
+                text="Learn More"
+                handleClick={() =>
+                  handleSendSMS(
+                    "Hi I'm interested in learning more about the Essentials Package."
+                  )
+                }
+                customStyle={{ marginTop: "10px" }}
+              />
             </Box>
           </AccordionDetails>
         </Accordion>
@@ -173,7 +236,7 @@ const ServicesSection = () => {
               <strong>Additional Services</strong> - Expand for pricing
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails sx={{ padding: "16px 3px 16px 3px" }}>
             <Box
               sx={{
                 display: "flex",
@@ -182,35 +245,41 @@ const ServicesSection = () => {
                 justifyContent: "center",
               }}
             >
-              {additionalServices.map((service) => {
+              {additionalServices.map((service, index) => {
                 return (
                   <>
                     <Card
                       key={service.name}
                       sx={{
-                        margin: "10px",
-                        width: "225px",
+                        margin: "3px",
+                        width: "140px",
                         justifyContent: "center",
                       }}
                     >
-                      <CardContent>
+                      <CardContent sx={{ padding: "6px" }}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                           <CardHeader
+                            sx={{ padding: "0px" }}
                             title={service.name}
+                            titleTypographyProps={{ fontSize: "1.1rem" }}
                             subheader={
                               <>
-                                <Typography>
-                                  Member Price:{" "}
-                                  <strong style={{ color: "green" }}>
-                                    {service.memberPrice}
-                                  </strong>
-                                </Typography>
-                                <Typography>
-                                  Non-Member Price:{" "}
-                                  <strong style={{ color: "red" }}>
-                                    {service.nonMemberPrice}
-                                  </strong>
-                                </Typography>
+                                <FormControlLabel
+                                  label="Learn More"
+                                  control={
+                                    <Checkbox
+                                      onChange={(e: any) => {
+                                        handleCheckboxChange(
+                                          index,
+                                          e.target.checked
+                                        );
+                                      }}
+                                      checked={
+                                        additionalServicesForm[index].interested
+                                      }
+                                    />
+                                  }
+                                />
                               </>
                             }
                           ></CardHeader>
@@ -220,6 +289,11 @@ const ServicesSection = () => {
                   </>
                 );
               })}
+              <CustomButton
+                text="Learn More"
+                handleClick={() => handleSendSMS("")}
+                customStyle={{ marginTop: "10px" }}
+              />
             </Box>
           </AccordionDetails>
         </Accordion>

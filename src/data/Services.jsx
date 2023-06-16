@@ -155,7 +155,7 @@ export const services = [
 
 export const additionalServices = [
   {
-    name: "Maintain Hottub",
+    name: "Maintain Hot tub",
     memberPrice: 80.0,
     nonMemberPrice: 104.0,
     image: "#",
@@ -185,19 +185,13 @@ export const additionalServices = [
     image: "#",
   },
   {
-    name: "Clean out washing machine drain filter (limited access)",
-    memberPrice: 45.0,
-    nonMemberPrice: 61.0,
-    image: "#",
-  },
-  {
     name: "Replace Fridge Water Filter",
     memberPrice: 25.0,
     nonMemberPrice: 34.0,
     image: "#",
   },
   {
-    name: "Clean the inside of the oven",
+    name: "Full oven cleaning",
     memberPrice: 60.0,
     nonMemberPrice: 81.0,
     image: "#",
@@ -221,21 +215,9 @@ export const additionalServices = [
     image: "#",
   },
   {
-    name: "Wipe down glass and vacuum out fireplace",
-    memberPrice: 40.0,
-    nonMemberPrice: 52.0,
-    image: "#",
-  },
-  {
-    name: "Clean glass on oven",
-    memberPrice: 30.0,
-    nonMemberPrice: 41.0,
-    image: "#",
-  },
-  {
-    name: "Vacuum out ash from Fireplace",
-    memberPrice: 15.0,
-    nonMemberPrice: 20.0,
+    name: "Clean gas and wood burning fireplace",
+    memberPrice: 45.0,
+    nonMemberPrice: 60.0,
     image: "#",
   },
   {
