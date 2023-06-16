@@ -7,9 +7,11 @@ import {
   Button,
   CardMedia,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../hooks/CustomButton";
 
 const RunixExperienceSection = () => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -126,6 +128,7 @@ const RunixExperienceSection = () => {
           <CustomButton
             text="Learn More"
             handleClick={() => {
+              navigate("/learnmore/complete");
               window.open(
                 "sms:+12082195001?&body=I'm%20interested%20in%20learning%20more%20about%20services%20for%20my%20home."
               );

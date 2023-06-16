@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../hooks/CustomButton";
 
 type FormType = {
@@ -33,6 +34,8 @@ const ContactUsSection = () => {
     email: "",
     address: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -138,7 +141,10 @@ const ContactUsSection = () => {
         <CustomButton
           text="Submit"
           customStyle={{ marginTop: "10px" }}
-          handleClick={(e) => handleSubmit(e)}
+          handleClick={(e) => {
+            handleSubmit(e);
+            navigate("/learnmore/complete");
+          }}
         ></CustomButton>
       </Container>
       <Snackbar

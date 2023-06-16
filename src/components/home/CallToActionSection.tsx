@@ -14,6 +14,7 @@ import { CustomButton } from "../../hooks/CustomButton";
 const CallToActionSection = () => {
   const theme = useContext(ThemeContext);
   const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -58,11 +59,12 @@ const CallToActionSection = () => {
         </Box>
         <CustomButton
           text="Get a Free Quote!"
-          handleClick={() =>
+          handleClick={() => {
+            navigate("/learnmore/complete");
             window.location.replace(
-              "sms:+12082195001?&body=I'm%20interested%20in%20learning%20more%20about%20services%20for%20my%20home."
-            )
-          }
+              "sms:+12082195001?&body=I'm%20interested%20in%20getting%20a%20quote%20for%20my%20home."
+            );
+          }}
           customStyle={{
             marginLeft: "12%",
             marginTop: "10px",

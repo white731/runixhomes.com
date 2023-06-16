@@ -17,12 +17,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { additionalServices, services } from "../../data/Services";
 import { useState } from "react";
 import { CustomButton } from "../../hooks/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const ServicesSection = () => {
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   });
+
+  const navigate = useNavigate();
 
   const initialFormStates = additionalServices.map((service) => ({
     name: service.name,
@@ -55,6 +58,7 @@ const ServicesSection = () => {
             ? servicesAsStrings
             : "additional services."
         }`;
+    navigate("/learnmore/complete");
     window.location.replace(`sms:+12082195001?&body=${textMessage}`);
   };
 
