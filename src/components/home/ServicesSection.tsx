@@ -175,9 +175,10 @@ const ServicesSection = () => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 flexWrap: "wrap",
                 justifyContent: "center",
+                alignContent: "center",
               }}
             >
               {services
