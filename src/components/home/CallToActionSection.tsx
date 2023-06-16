@@ -18,9 +18,9 @@ const CallToActionSection = () => {
     <Box
       sx={{
         width: "100%",
-        height: "75vh",
+        // height: "75vh",
         backgroundImage:
-          "url(https://res.cloudinary.com/dndx9szw0/image/upload/v1686290059/Runix%20Website/pexels-binyamin-mellish-186077-1_zsowor.jpg)",
+          "url(https://res.cloudinary.com/dndx9szw0/image/upload/t_Banner%2016:9/v1686290059/Runix%20Website/pexels-binyamin-mellish-186077-1_zsowor.jpg)",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundSize: "cover",

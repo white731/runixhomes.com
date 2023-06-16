@@ -4,6 +4,8 @@ export type PropertyType = {
   "Add Ons Monthly": number;
   "Add on Tasks": string[];
   Address: string[];
+  AssumeHealthyPlan: boolean;
+  AssumeEssentialsPlan: boolean;
   City: string[];
   Customer: string[];
   "Customer Name": string[];

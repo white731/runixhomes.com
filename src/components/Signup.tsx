@@ -4,6 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Autocomplete,
+  Backdrop,
   Box,
   Button,
   Card,
@@ -12,6 +13,7 @@ import {
   CardHeader,
   CardMedia,
   Checkbox,
+  CircularProgress,
   Container,
   duration,
   FormControl,
@@ -25,20 +27,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { additionalServices, services } from "../data/Services";
+import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
+import { additionalServices } from "../data/Services";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { customerServiceAgreement } from "./signup/customerAgreement";
 import { CustomButton } from "../hooks/CustomButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PropertyType } from "../types/Types";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import dayjs, { Dayjs } from "dayjs";
 
-const sampleAirtableProperties = [
-  { label: "Main Office", address: "700 E 700 N" },
-  { label: "Bryon's House", address: "734 E 700 N" },
-];
 type updatedFormStates = {
   name: string;
   quantity: number;
@@ -66,6 +65,8 @@ const Signup = () => {
     "Add Ons Monthly": 0,
     "Add on Tasks": [],
     Address: [],
+    AssumeHealthyPlan: false,
+    AssumeEssentialsPlan: false,
     City: [],
     Customer: [],
     "Customer Name": [],
@@ -110,13 +111,20 @@ const Signup = () => {
   }));
 
   const [totalAddonCost, setTotalAddonCost] = useState(0);
-  const [healthyHomeService, setHealthyHomeService] = useState(true);
-  const [essentialsService, setEssentialsService] = useState(true);
+  const [healthyHomeService, setHealthyHomeService] = useState(
+    property.AssumeHealthyPlan
+  );
+  const [essentialsService, setEssentialsService] = useState(
+    property.AssumeEssentialsPlan
+  );
+
+  const today = new Date().getDate();
   const [selectedAddons, setSelectedAddons] = useState(initialFormStates);
   const [customerAgrees, setCustomerAgrees] = useState(false);
-  const [selectedDateTime, setSelectedDateTime] = useState<string>(
-    availableDates[0].Schedule
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(
+    dayjs(today)
   );
+  const [loading, setLoading] = useState(false);
 
   const handleSelectChange = (index: number, value: number) => {
     // Create a copy of the form states array
@@ -170,6 +178,11 @@ const Signup = () => {
     setTotalAddonCost(total / 12);
   };
 
+  const handleDateChange = (newValue: Dayjs | null) => {
+    console.log(newValue?.toString());
+    setSelectedDateTime(newValue);
+  };
+
   let healthyHomePrice =
     healthyHomeService && property ? property["Healthy Home Monthly"] : 0;
   let essentialsPrice =
@@ -218,6 +231,8 @@ const Signup = () => {
   };
 
   const getPropertyByRecordID = async () => {
+    setLoading(true);
+
     try {
       //this is for testing purposes only
       const recordId = "rec5co1VjZYUpPlWs";
@@ -228,8 +243,17 @@ const Signup = () => {
       console.log(response.data.fields);
       if (response.data.fields) {
         setProperty(response.data.fields);
+        setEssentialsService(
+          response.data.fields.AssumeEssentialsPlan ? true : false
+        );
+        setHealthyHomeService(
+          response.data.fields.AssumeHealthyPlan ? true : false
+        );
+        setLoading(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const getAvailableDates = async () => {
@@ -389,6 +413,12 @@ const Signup = () => {
   const propertyName = property ? property["Property Name"] : "";
   const customerName = property ? property["Customer Name"][0] : "";
 
+  const isWeekend = (date: Dayjs) => {
+    const day = date.day();
+
+    return day === 0 || day === 6;
+  };
+
   return (
     <Box
       sx={{
@@ -412,13 +442,18 @@ const Signup = () => {
           {propertyName}
         </Typography>
         <Typography variant="h6" sx={{ margin: "10px", textAlign: "center" }}>
-          Select a date and time for your first service.
+          Select a preferred date for your first service.
         </Typography>
-        <FormControl sx={{ width: "325px" }}>
+        {/* <FormControl sx={{ width: "325px" }}>
           <InputLabel id="demo-simple-select-label">
             Select a Date & Time
-          </InputLabel>
-          <Select
+          </InputLabel> */}
+        <DatePicker
+          disablePast
+          shouldDisableDate={isWeekend}
+          onChange={(newValue) => handleDateChange(newValue)}
+        />
+        {/* <Select
             value={selectedDateTime}
             onChange={(e) => setSelectedDateTime(e.target.value)}
             label="Select a timeframe"
@@ -426,8 +461,8 @@ const Signup = () => {
             {availableDates.map((x) => {
               return <MenuItem value={x.Schedule}>{x.Schedule}</MenuItem>;
             })}
-          </Select>
-        </FormControl>
+          </Select> */}
+        {/* </FormControl> */}
         <Typography variant="h6" sx={{ marginTop: "40px" }}>
           My Service Subscriptions
         </Typography>
@@ -624,6 +659,13 @@ const Signup = () => {
           handleClick={handleSubmit}
         />
       </Container>
+      <Backdrop
+        sx={{ color: "#fff" }}
+        open={loading}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };
