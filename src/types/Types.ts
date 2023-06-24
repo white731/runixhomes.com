@@ -47,3 +47,12 @@ type TaskType = {
   TotalDuration: number;
   "Individual Service Price (with materials)": number[];
 };
+
+export type SelectedTaskType = {
+  name: string;
+  quantity: number;
+  frequency: number;
+  memberPrice: number;
+  nonMemberPrice: number;
+  result: number;
+};
