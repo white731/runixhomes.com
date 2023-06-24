@@ -1,4 +1,4 @@
-import { CheckBox, LocalPostOffice } from "@mui/icons-material";
+import { CheckBox, LocalPostOffice, RepeatOneSharp } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -15,6 +15,7 @@ import {
   Checkbox,
   CircularProgress,
   Container,
+  Divider,
   duration,
   FormControl,
   FormControlLabel,
@@ -22,6 +23,7 @@ import {
   Input,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
   Tooltip,
@@ -34,14 +36,14 @@ import { customerServiceAgreement } from "./signup/customerAgreement";
 import { CustomButton } from "../hooks/CustomButton";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { PropertyType } from "../types/Types";
+import { PropertyTaskType, PropertyType } from "../types/Types";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 
 type updatedFormStates = {
   name: string;
   quantity: number;
-  textFieldValue: number;
+  frequency: number;
   memberPrice: number;
   nonMemberPrice: number;
   result: number;
@@ -101,14 +103,30 @@ const Signup = () => {
     },
   ]);
 
-  const initialFormStates = additionalServices.map((service) => ({
-    name: service.name,
-    quantity: 0,
-    textFieldValue: 1,
-    memberPrice: service.memberPrice,
-    nonMemberPrice: service.nonMemberPrice,
-    result: 0,
-  }));
+  const [PropertyTasks, setPropertyTasks] = useState<
+    PropertyTaskType[] | undefined
+  >();
+
+  const [EssentialsTasks, setEssentialsTasks] = useState<
+    PropertyTaskType[] | undefined
+  >();
+  const [HealthyHomeTasks, setHealthyHomeTasks] = useState<
+    PropertyTaskType[] | undefined
+  >();
+  const [AdditionalTasks, setAdditionalTasks] = useState<PropertyTaskType[]>([
+    {
+      fields: {
+        Task: ["Clean Toilets"],
+        PlanName: ["1-Healthy Home Plan"],
+        QuarterEffective: ["1"],
+        FrequencyNumber: 1,
+        Qty: [1],
+        TotalDuration: 2400,
+        "Individual Service Price (with materials)": [0.0],
+      },
+      id: "0",
+    },
+  ]);
 
   const [totalAddonCost, setTotalAddonCost] = useState(0);
   const [healthyHomeService, setHealthyHomeService] = useState(
@@ -119,7 +137,16 @@ const Signup = () => {
   );
 
   const today = new Date().getDate();
-  const [selectedAddons, setSelectedAddons] = useState(initialFormStates);
+  const [selectedAddons, setSelectedAddons] = useState([
+    {
+      name: "Task",
+      quantity: 0,
+      frequency: 1,
+      memberPrice: 1.0,
+      nonMemberPrice: 1.0,
+      result: 0,
+    },
+  ]);
   const [customerAgrees, setCustomerAgrees] = useState(false);
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(
     dayjs(today)
@@ -138,11 +165,11 @@ const Signup = () => {
     handleUpdateAddOnCost(updatedFormStates);
   };
 
-  const handleTextFieldChange = (index: number, value: number) => {
+  const handleFrequencyChange = (index: number, value: number) => {
     // Create a copy of the form states array
     const updatedFormStates = [...selectedAddons];
-    // Update the textFieldValue for the specific form
-    updatedFormStates[index].textFieldValue = value;
+    // Update the frequency for the specific form
+    updatedFormStates[index].frequency = value;
     // Update the state variable
 
     console.log(updatedFormStates);
@@ -156,19 +183,19 @@ const Signup = () => {
     updatedFormStates.forEach((aos) => {
       if (essentialsService || healthyHomeService) {
         const quantity = aos.quantity;
-        const textFieldValue = aos.textFieldValue;
+        const frequency = aos.frequency;
         const memberPrice = aos.memberPrice;
 
-        const result = quantity * textFieldValue * memberPrice;
+        const result = quantity * frequency * memberPrice;
         aos.result = result; // Adding the result property to each object for reference
 
         total += result;
       } else {
         const quantity = aos.quantity;
-        const textFieldValue = aos.textFieldValue;
+        const frequency = aos.frequency;
         const nonMemberPrice = aos.nonMemberPrice;
 
-        const result = quantity * textFieldValue * nonMemberPrice;
+        const result = quantity * frequency * nonMemberPrice;
         aos.result = result; // Adding the result property to each object for reference
 
         total += result;
@@ -198,7 +225,7 @@ const Signup = () => {
     selectedAddons
       .filter((x) => x.quantity > 0)
       .map((x) => {
-        let text = `Name: ${x.name} | Frequency: ${x.textFieldValue} | Quanity: ${x.quantity} | Member Price: ${x.memberPrice} | Non-Member Price: ${x.nonMemberPrice}\n`;
+        let text = `Name: ${x.name} | Frequency: ${x.frequency} | Quanity: ${x.quantity} | Member Price: ${x.memberPrice} | Non-Member Price: ${x.nonMemberPrice}\n`;
         selectedAddOnsAsString += text;
       });
 
@@ -230,6 +257,46 @@ const Signup = () => {
     } catch (error: any) {}
   };
 
+  const getPropertyTasks = async (propertyRecordID: string) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyTasks?propertyRecordID=${propertyRecordID}`
+      );
+      console.log(response.data);
+      let propertyTasks: PropertyTaskType[] = response.data;
+      setPropertyTasks(propertyTasks);
+      let healthyHomeTasks = propertyTasks.filter((propertyTask) =>
+        propertyTask.fields.PlanName[0].includes("1")
+      );
+      let essentialTasks = propertyTasks.filter((propertyTask) =>
+        propertyTask.fields.PlanName[0].includes("2")
+      );
+      let additionalTasks = propertyTasks.filter((propertyTask) =>
+        propertyTask.fields.PlanName[0].includes("4")
+      );
+      console.log("healthyHomeTasks: ", healthyHomeTasks);
+      console.log("essentialsTasks: ", essentialTasks);
+      console.log("additionalTasks: ", additionalTasks);
+
+      setHealthyHomeTasks(healthyHomeTasks);
+      setEssentialsTasks(essentialTasks);
+      setAdditionalTasks(additionalTasks);
+
+      const initialFormStates = additionalTasks.map((service) => ({
+        name: service.fields.Task[0],
+        quantity: service.fields.Qty[0],
+        frequency: service.fields.FrequencyNumber,
+        memberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        nonMemberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        result: 0,
+      }));
+
+      setSelectedAddons(initialFormStates);
+    } catch (error) {}
+  };
+
   const getPropertyByRecordID = async () => {
     setLoading(true);
 
@@ -249,6 +316,7 @@ const Signup = () => {
         setHealthyHomeService(
           response.data.fields.AssumeHealthyPlan ? true : false
         );
+        getPropertyTasks(response.data.fields.recordId);
         setLoading(false);
       }
     } catch (error) {
@@ -305,12 +373,7 @@ const Signup = () => {
         />
         <CardContent>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardHeader
-              title="Healthy Home Package"
-              subheader={`${currencyFormatter.format(
-                property ? property["Healthy Home Monthly"] : 0
-              )} per Month`}
-            ></CardHeader>
+            <CardHeader title="Healthy Home Package"></CardHeader>
             <FormControlLabel
               label="Include in Plan"
               control={
@@ -368,12 +431,7 @@ const Signup = () => {
         />
         <CardContent>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardHeader
-              title="Essentials Package"
-              subheader={`${currencyFormatter.format(
-                property["Essentials Monthly"]
-              )} per Month`}
-            ></CardHeader>
+            <CardHeader title="Essentials Package"></CardHeader>
             <FormControlLabel
               label="Include in Plan"
               control={
@@ -410,6 +468,172 @@ const Signup = () => {
     );
   };
 
+  const additionalServicesCard = () => {
+    return (
+      <Card>
+        <CardMedia
+          component="img"
+          height="250"
+          image={
+            "https://res.cloudinary.com/dndx9szw0/image/upload/c_lfill,g_center,h_1080,w_1080,y_0/v1685724564/Runix%20Logos/AdobeStock_402251354_mhxgik.jpg"
+          }
+          alt="air filters"
+        />
+        <CardContent>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <CardHeader title="Additional Services"></CardHeader>
+          </Box>
+        </CardContent>
+        {/* <Container maxWidth="sm">
+          <Typography
+            variant="caption"
+            sx={{ textAlign: "center", padding: "10px" }}
+          >
+            Choose from the list below any additional services you would like to
+            have done on your home. You can choose the frequency of the service
+            as well as how many items you have. For example, If you have 6
+            Exterior lights that you'd like cleaned twice a year, select
+            Semi-Annually for "How Often" and "6" for "How many" next to the
+            "Clean exterior lights" option.
+          </Typography>
+        </Container> */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              width: { xs: "100px", sm: "200px" },
+              textAlign: "center",
+              marginLeft: "8px",
+            }}
+            variant="body2"
+          >
+            Times per year?
+          </Typography>
+          <Typography
+            sx={{ width: "45px", textAlign: "center" }}
+            variant="body2"
+          >
+            How many?
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              width: { xs: "125px", sm: "200px" },
+              margin: "3px",
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Name
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ maxWidth: "45px", marginRight: "8px", textAlign: "center" }}
+          >
+            {" "}
+            Price
+          </Typography>
+        </Box>
+        <Divider />
+        {AdditionalTasks.map((service, index) => {
+          return (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: "5px",
+                  marginBottom: "5px",
+                }}
+              >
+                <Select
+                  defaultValue={0}
+                  size="small"
+                  onChange={(e: any) => {
+                    handleSelectChange(index, e.target.value);
+                  }}
+                  sx={{
+                    width: { xs: "100px", sm: "200px" },
+                    marginLeft: "8px",
+                    marginRight: "3.5px",
+                  }}
+                >
+                  <MenuItem key="1" value={1}>
+                    Annually
+                  </MenuItem>
+                  <MenuItem key="2" value={2}>
+                    Semi-Annually
+                  </MenuItem>
+                  <MenuItem key="3" value={4}>
+                    Quarterly
+                  </MenuItem>
+                  <MenuItem key="4" value={12}>
+                    Monthly
+                  </MenuItem>
+                  <MenuItem key="6" value={0}>
+                    None
+                  </MenuItem>
+                </Select>
+                <OutlinedInput
+                  type="number"
+                  defaultValue={selectedAddons[index].quantity}
+                  // value=
+                  size="small"
+                  sx={{
+                    width: "40px",
+                    marginLeft: "3.5px",
+                    marginRight: "3.5px",
+                  }}
+                  onChange={(e: any) => {
+                    handleFrequencyChange(index, e.target.value);
+                  }}
+                />
+                <Typography
+                  sx={{
+                    width: { xs: "125px", sm: "200px" },
+                    marginLeft: "3.5px",
+                    marginRight: "3.5px",
+                    textAlign: "center",
+                  }}
+                  variant="caption"
+                >
+                  {service.fields.Task}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    width: "45px",
+                    marginRight: "8px",
+                    marginLeft: "3.5px",
+                  }}
+                >
+                  {currencyFormatter.format(
+                    essentialsService || healthyHomeService
+                      ? service.fields[
+                          "Individual Service Price (with materials)"
+                        ][0]
+                      : service.fields[
+                          "Individual Service Price (with materials)"
+                        ][0]
+                  )}
+                </Typography>
+              </Box>
+              <Divider />
+            </>
+          );
+        })}
+      </Card>
+    );
+  };
+
   const propertyName = property ? property["Property Name"] : "";
   const customerName = property ? property["Customer Name"][0] : "";
 
@@ -429,6 +653,7 @@ const Signup = () => {
       }}
     >
       <Container
+        maxWidth="sm"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -441,28 +666,7 @@ const Signup = () => {
         <Typography variant="h6" sx={{ marginBottom: "10px" }}>
           {propertyName}
         </Typography>
-        <Typography variant="h6" sx={{ margin: "10px", textAlign: "center" }}>
-          Select a preferred date for your first service.
-        </Typography>
-        {/* <FormControl sx={{ width: "325px" }}>
-          <InputLabel id="demo-simple-select-label">
-            Select a Date & Time
-          </InputLabel> */}
-        <DatePicker
-          disablePast
-          shouldDisableDate={isWeekend}
-          onChange={(newValue) => handleDateChange(newValue)}
-        />
-        {/* <Select
-            value={selectedDateTime}
-            onChange={(e) => setSelectedDateTime(e.target.value)}
-            label="Select a timeframe"
-          >
-            {availableDates.map((x) => {
-              return <MenuItem value={x.Schedule}>{x.Schedule}</MenuItem>;
-            })}
-          </Select> */}
-        {/* </FormControl> */}
+
         <Typography variant="h6" sx={{ marginTop: "40px" }}>
           My Service Subscriptions
         </Typography>
@@ -477,135 +681,7 @@ const Signup = () => {
           {healthyHomeCard()}
           {essentialsCard()}
         </Box>
-        <Container maxWidth="sm">
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: "center",
-              marginTop: "40px",
-              marginBottom: "20px",
-            }}
-          >
-            Additional Services
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{ textAlign: "center", padding: "10px" }}
-          >
-            Choose from the list below any additional services you would like to
-            have done on your home. You can choose the frequency of the service
-            as well as how many items you have. For example, If you have 6
-            Exterior lights that you'd like cleaned twice a year, select
-            Semi-Annually for "How Often" and "6" for "How many" next to the
-            "Clean exterior lights" option.
-          </Typography>
-        </Container>
-        <Box
-          sx={{
-            marginTop: "20px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography
-            sx={{
-              width: { xs: "114px", sm: "200px" },
-              margin: "3px",
-              textAlign: "center",
-            }}
-            variant="body2"
-          >
-            Times per year?
-          </Typography>
-          <Typography
-            sx={{ width: "50px", margin: "3px", textAlign: "center" }}
-            variant="body2"
-          >
-            How many?
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              width: { xs: "140px", sm: "200px" },
-              margin: "3px",
-              textAlign: "center",
-            }}
-          >
-            {" "}
-            Name
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ maxWidth: "50px", margin: "3px", textAlign: "center" }}
-          >
-            {" "}
-            Price
-          </Typography>
-        </Box>
-        {additionalServices.map((service, index) => {
-          return (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Select
-                defaultValue={0}
-                size="small"
-                onChange={(e: any) => {
-                  handleSelectChange(index, e.target.value);
-                }}
-                sx={{ width: { xs: "114px", sm: "200px" } }}
-              >
-                <MenuItem key="1" value={1}>
-                  Annually
-                </MenuItem>
-                <MenuItem key="2" value={2}>
-                  Semi-Annually
-                </MenuItem>
-                <MenuItem key="3" value={4}>
-                  Quarterly
-                </MenuItem>
-                <MenuItem key="4" value={12}>
-                  Monthly
-                </MenuItem>
-                <MenuItem key="5" value={1}>
-                  One Time
-                </MenuItem>
-                <MenuItem key="6" value={0}>
-                  None
-                </MenuItem>
-              </Select>
-              <Input
-                type="number"
-                value={selectedAddons[index].textFieldValue}
-                size="small"
-                sx={{ width: "50px", margin: "3px" }}
-                onChange={(e: any) => {
-                  handleTextFieldChange(index, e.target.value);
-                }}
-              />
-              <Typography
-                sx={{ width: { xs: "125px", sm: "200px" }, margin: "3px" }}
-                variant="caption"
-              >
-                {service.name}
-              </Typography>
-              <Typography variant="caption" sx={{ width: "45px" }}>
-                {currencyFormatter.format(
-                  essentialsService || healthyHomeService
-                    ? service.memberPrice
-                    : service.nonMemberPrice
-                )}
-              </Typography>
-            </Box>
-          );
-        })}
+        {additionalServicesCard()}
         <Box
           sx={{
             display: "flex",
@@ -614,13 +690,17 @@ const Signup = () => {
           }}
         >
           <Typography variant="h6" sx={{ marginTop: "40px" }}>
-            Total: <strong>{total}</strong> per Month
-          </Typography>
-          <Typography variant="caption" sx={{ textAlign: "center" }}>
-            *Note that the amount displayed above represents a monthly price for
-            an annual committment.
+            Total: <strong>{total}</strong> per Year
           </Typography>
         </Box>
+        <Typography variant="h6" sx={{ margin: "10px", textAlign: "center" }}>
+          Select a preferred date for your first service.
+        </Typography>
+        <DatePicker
+          disablePast
+          shouldDisableDate={isWeekend}
+          onChange={(newValue) => handleDateChange(newValue)}
+        />
         <Typography
           variant="h6"
           sx={{ marginTop: "40px", marginBottom: "20px" }}

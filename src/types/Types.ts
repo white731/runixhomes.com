@@ -1,5 +1,3 @@
-import { Duration } from "@mui/material";
-
 export type PropertyType = {
   "Add Ons Monthly": number;
   "Add on Tasks": string[];
@@ -33,4 +31,19 @@ export type PropertyType = {
   "Total Monthly": number;
   Type: string[];
   recordId: string;
+};
+
+export type PropertyTaskType = {
+  fields: TaskType;
+  id: string;
+};
+
+type TaskType = {
+  Task: string[];
+  PlanName: string[];
+  QuarterEffective: string[];
+  FrequencyNumber: number;
+  Qty: number[];
+  TotalDuration: number;
+  "Individual Service Price (with materials)": number[];
 };
