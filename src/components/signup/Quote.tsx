@@ -7,12 +7,22 @@ import {
   Typography,
 } from "@mui/material";
 import { PropertyTaskType } from "../../types/Types";
-import { OptionalAddons } from "./OptionalAddons";
 import { QuarterQuote } from "./QuarterQuote";
 
 type Props = {
   tasks: PropertyTaskType[];
+  healthyHomeAnnualPrice: number;
+  essentialsAnnualPrice: number;
+  healthyHomePlanSelected: boolean;
+  essentialsPlanSelected: boolean;
+  bothPlansSelected: boolean;
+  handlePlanChange: (e: any) => void;
 };
+
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
 
 export const Quote = (props: Props) => {
   return (
@@ -28,7 +38,7 @@ export const Quote = (props: Props) => {
           zIndex: 2,
         }}
       >
-        <Grid xs={4} sx={{ border: 1 }}>
+        <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
           <Box
             sx={{
               textAlign: "center",
@@ -44,14 +54,25 @@ export const Quote = (props: Props) => {
             </Typography>
             <Box>
               <Typography>
-                <strong>$200.00</strong>
+                <strong>
+                  {currencyFormatter.format(props.healthyHomeAnnualPrice / 4)}
+                </strong>
               </Typography>
-              <Typography>/Service</Typography>
+              <Typography>/Quarter</Typography>
             </Box>
-            <FormControlLabel control={<Checkbox />} label="Select" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="Healthy Home"
+                  checked={props.healthyHomePlanSelected}
+                  onChange={props.handlePlanChange}
+                />
+              }
+              label="Select"
+            />
           </Box>
         </Grid>
-        <Grid xs={4} sx={{ border: 1 }}>
+        <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
           <Box
             sx={{
               textAlign: "center",
@@ -67,14 +88,25 @@ export const Quote = (props: Props) => {
             </Typography>
             <Box>
               <Typography>
-                <strong>$200.00</strong>
+                <strong>
+                  {currencyFormatter.format(props.essentialsAnnualPrice / 4)}
+                </strong>
               </Typography>
-              <Typography>/Service</Typography>
+              <Typography>/Quarter</Typography>
             </Box>
-            <FormControlLabel control={<Checkbox />} label="Select" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="Essentials"
+                  checked={props.essentialsPlanSelected}
+                  onChange={props.handlePlanChange}
+                />
+              }
+              label="Select"
+            />
           </Box>
         </Grid>
-        <Grid xs={4} sx={{ border: 1 }}>
+        <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
           <Box
             sx={{
               textAlign: "center",
@@ -90,11 +122,27 @@ export const Quote = (props: Props) => {
             </Typography>
             <Box>
               <Typography>
-                <strong>$200.00</strong>
+                <strong>
+                  {currencyFormatter.format(
+                    ((props.healthyHomeAnnualPrice +
+                      props.essentialsAnnualPrice) /
+                      4) *
+                      0.9
+                  )}
+                </strong>
               </Typography>
-              <Typography>/Service</Typography>
+              <Typography>/Quarter</Typography>
             </Box>
-            <FormControlLabel control={<Checkbox />} label="Select" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="Healthy Home + Essentials"
+                  checked={props.bothPlansSelected}
+                  onChange={props.handlePlanChange}
+                />
+              }
+              label="Select"
+            />
           </Box>
         </Grid>
       </Grid>

@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PropertyTaskType } from "../../types/Types";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 type Props = {
   tasks: PropertyTaskType[];
@@ -19,6 +20,7 @@ export const QuarterQuote = (props: Props) => {
       <Box
         sx={{
           border: 1,
+          borderColor: "#889696",
           height: "40px",
           display: "flex",
           justifyContent: "center",
@@ -38,6 +40,7 @@ export const QuarterQuote = (props: Props) => {
               <Grid
                 sx={{
                   border: 1,
+                  borderColor: "#889696",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -57,7 +60,7 @@ export const QuarterQuote = (props: Props) => {
                   backgroundColor: "white",
                 }}
               >
-                <Grid xs={4} sx={{ border: 1 }}>
+                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
                   <Box
                     sx={{
                       textAlign: "center",
@@ -67,16 +70,14 @@ export const QuarterQuote = (props: Props) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Checkbox
-                      size="small"
-                      disableTouchRipple
-                      checked={
-                        task.fields.PlanName[0].includes("1") ? true : false
-                      }
-                    />
+                    {task.fields.PlanName[0].includes("1") ? (
+                      <CheckCircleIcon />
+                    ) : (
+                      ""
+                    )}
                   </Box>
                 </Grid>
-                <Grid xs={4} sx={{ border: 1 }}>
+                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
                   <Box
                     sx={{
                       textAlign: "center",
@@ -88,17 +89,15 @@ export const QuarterQuote = (props: Props) => {
                     }}
                   >
                     <Typography>
-                      <Checkbox
-                        size="small"
-                        disableTouchRipple
-                        checked={
-                          task.fields.PlanName[0].includes("2") ? true : false
-                        }
-                      />
+                      {task.fields.PlanName[0].includes("2") ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        ""
+                      )}
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid xs={4} sx={{ border: 1 }}>
+                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
                   <Box
                     sx={{
                       textAlign: "center",
@@ -108,16 +107,12 @@ export const QuarterQuote = (props: Props) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Checkbox
-                      size="small"
-                      disableTouchRipple
-                      checked={
-                        task.fields.PlanName[0].includes("1") ||
-                        task.fields.PlanName[0].includes("2")
-                          ? true
-                          : false
-                      }
-                    />
+                    {task.fields.PlanName[0].includes("1") ||
+                    task.fields.PlanName[0].includes("2") ? (
+                      <CheckCircleIcon />
+                    ) : (
+                      ""
+                    )}
                   </Box>
                 </Grid>
               </Grid>
