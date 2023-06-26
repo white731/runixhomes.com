@@ -27,8 +27,10 @@ export type SignupCardProps = {
 };
 
 export const SignupCard = (props: SignupCardProps) => {
+  console.log("list of tasks: ", props.listOfTasks);
+  console.log("selectedTasks: ", props.selectedTasks);
   return (
-    <Card>
+    <Card sx={{ marginTop: "30px" }}>
       <CardMedia
         component="img"
         height="250"
@@ -108,7 +110,11 @@ export const SignupCard = (props: SignupCardProps) => {
               }}
             >
               <Select
-                defaultValue={0}
+                defaultValue={
+                  !service.fields.PlanName[0].includes("4")
+                    ? props.selectedTasks[index].frequency
+                    : 0
+                }
                 size="small"
                 onChange={(e: any) => {
                   props.handleFrequencyChange(index, e.target.value);
@@ -138,10 +144,9 @@ export const SignupCard = (props: SignupCardProps) => {
               <OutlinedInput
                 type="number"
                 defaultValue={props.selectedTasks[index].quantity}
-                // value=
                 size="small"
                 sx={{
-                  width: "40px",
+                  width: "50px",
                   marginLeft: "3.5px",
                   marginRight: "3.5px",
                 }}

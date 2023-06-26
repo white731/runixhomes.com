@@ -1,37 +1,14 @@
-import { CheckBox, LocalPostOffice, RepeatOneSharp } from "@mui/icons-material";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Autocomplete,
   Backdrop,
   Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardHeader,
-  CardMedia,
   Checkbox,
   CircularProgress,
   Container,
-  Divider,
-  duration,
-  FormControl,
   FormControlLabel,
-  FormLabel,
-  Input,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
-import { additionalServices } from "../data/Services";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { DatePicker } from "@mui/x-date-pickers";
 import { customerServiceAgreement } from "./signup/customerAgreement";
 import { CustomButton } from "../hooks/CustomButton";
 import axios from "axios";
@@ -40,6 +17,7 @@ import { PropertyTaskType, PropertyType } from "../types/Types";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { SignupCard } from "./signup/SignupCard";
+import { Quote } from "./signup/Quote";
 
 type updatedFormStates = {
   name: string;
@@ -104,20 +82,57 @@ const Signup = () => {
     },
   ]);
 
-  const [PropertyTasks, setPropertyTasks] = useState<
-    PropertyTaskType[] | undefined
-  >();
+  const [PropertyTasks, setPropertyTasks] = useState<PropertyTaskType[]>([
+    {
+      fields: {
+        Task: ["Service Furnace"],
+        PlanName: ["1-Healthy Home Plan"],
+        QuarterEffective: ["1"],
+        FrequencyNumber: 1,
+        Qty: [1],
+        TotalDuration: 2400,
+        "Individual Service Price (with materials)": [0.0],
+      },
+      id: "0",
+    },
+  ]);
 
   const [EssentialsTasks, setEssentialsTasks] = useState<
     PropertyTaskType[] | undefined
-  >();
+  >([
+    {
+      fields: {
+        Task: ["Service Furnace"],
+        PlanName: ["1-Healthy Home Plan"],
+        QuarterEffective: ["1"],
+        FrequencyNumber: 1,
+        Qty: [1],
+        TotalDuration: 2400,
+        "Individual Service Price (with materials)": [0.0],
+      },
+      id: "0",
+    },
+  ]);
   const [HealthyHomeTasks, setHealthyHomeTasks] = useState<
     PropertyTaskType[] | undefined
-  >();
+  >([
+    {
+      fields: {
+        Task: ["Service Furnace"],
+        PlanName: ["1-Healthy Home Plan"],
+        QuarterEffective: ["1"],
+        FrequencyNumber: 1,
+        Qty: [1],
+        TotalDuration: 2400,
+        "Individual Service Price (with materials)": [0.0],
+      },
+      id: "0",
+    },
+  ]);
   const [AdditionalTasks, setAdditionalTasks] = useState<PropertyTaskType[]>([
     {
       fields: {
-        Task: ["Clean Toilets"],
+        Task: ["Service Furnace"],
         PlanName: ["1-Healthy Home Plan"],
         QuarterEffective: ["1"],
         FrequencyNumber: 1,
@@ -138,10 +153,32 @@ const Signup = () => {
   );
 
   const today = new Date().getDate();
-  const [selectedAddons, setSelectedAddons] = useState([
+  const [selectedAdditionalTasks, setAdditionalSelectedTasks] = useState([
     {
       name: "Task",
-      quantity: 0,
+      quantity: 1,
+      frequency: 1,
+      memberPrice: 1.0,
+      nonMemberPrice: 1.0,
+      result: 0,
+    },
+  ]);
+
+  const [selectedHealthyHomeTasks, setSelectedHealthyHomeTasks] = useState([
+    {
+      name: "Task",
+      quantity: 1,
+      frequency: 1,
+      memberPrice: 1.0,
+      nonMemberPrice: 1.0,
+      result: 0,
+    },
+  ]);
+
+  const [selectedEssentialTasks, setSelectedEssentialTasks] = useState([
+    {
+      name: "Task",
+      quantity: 1,
       frequency: 1,
       memberPrice: 1.0,
       nonMemberPrice: 1.0,
@@ -156,25 +193,25 @@ const Signup = () => {
 
   const handleQuantityChange = (index: number, value: number) => {
     // Create a copy of the form states array
-    const updatedFormStates = [...selectedAddons];
+    const updatedFormStates = [...selectedAdditionalTasks];
     // Update the selectedAddon value for the specific form
     updatedFormStates[index].quantity = value;
     // Update the state variable
     console.log(updatedFormStates);
-    setSelectedAddons(updatedFormStates);
+    setAdditionalSelectedTasks(updatedFormStates);
     //UpdateTheTotalAddOnCost
     handleUpdateAddOnCost(updatedFormStates);
   };
 
   const handleFrequencyChange = (index: number, value: number) => {
     // Create a copy of the form states array
-    const updatedFormStates = [...selectedAddons];
+    const updatedFormStates = [...selectedAdditionalTasks];
     // Update the frequency for the specific form
     updatedFormStates[index].frequency = value;
     // Update the state variable
 
     console.log(updatedFormStates);
-    setSelectedAddons(updatedFormStates);
+    setAdditionalSelectedTasks(updatedFormStates);
     handleUpdateAddOnCost(updatedFormStates);
   };
 
@@ -223,7 +260,7 @@ const Signup = () => {
   const handleSubmit = () => {
     let selectedAddOnsAsString = "";
 
-    selectedAddons
+    selectedAdditionalTasks
       .filter((x) => x.quantity > 0)
       .map((x) => {
         let text = `Name: ${x.name} | Frequency: ${x.frequency} | Quanity: ${x.quantity} | Member Price: ${x.memberPrice} | Non-Member Price: ${x.nonMemberPrice}\n`;
@@ -283,9 +320,9 @@ const Signup = () => {
       setEssentialsTasks(essentialTasks);
       setAdditionalTasks(additionalTasks);
 
-      const initialFormStates = additionalTasks.map((service) => ({
+      const initialHealthyHomeStates = healthyHomeTasks.map((service) => ({
         name: service.fields.Task[0],
-        quantity: service.fields.Qty[0],
+        quantity: service.fields.Qty[0] ? service.fields.Qty[0] : 0,
         frequency: service.fields.FrequencyNumber,
         memberPrice:
           service.fields["Individual Service Price (with materials)"][0],
@@ -294,8 +331,34 @@ const Signup = () => {
         result: 0,
       }));
 
-      setSelectedAddons(initialFormStates);
-    } catch (error) {}
+      const initialEssentialsStates = essentialTasks.map((service) => ({
+        name: service.fields.Task[0],
+        quantity: service.fields.Qty[0] ? service.fields.Qty[0] : 0,
+        frequency: service.fields.FrequencyNumber,
+        memberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        nonMemberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        result: 0,
+      }));
+
+      const initialAdditionalStates = additionalTasks.map((service) => ({
+        name: service.fields.Task[0],
+        quantity: service.fields.Qty[0] ? service.fields.Qty[0] : 0,
+        frequency: service.fields.FrequencyNumber,
+        memberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        nonMemberPrice:
+          service.fields["Individual Service Price (with materials)"][0],
+        result: 0,
+      }));
+
+      setSelectedEssentialTasks(initialEssentialsStates);
+      setSelectedHealthyHomeTasks(initialHealthyHomeStates);
+      setAdditionalSelectedTasks(initialAdditionalStates);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getPropertyByRecordID = async () => {
@@ -343,132 +406,6 @@ const Signup = () => {
     getAvailableDates();
   }, []);
 
-  const handleHealthyHomePlanChecked = (e: any) => {
-    setHealthyHomeService(e.target.checked);
-    console.log(e.target.checked);
-  };
-
-  const handleEssentialPlanChecked = (e: any) => {
-    setEssentialsService(e.target.checked);
-    console.log(e.target.checked);
-  };
-
-  const healthyHomeCard = () => {
-    return (
-      <Card
-        sx={{
-          margin: "10px",
-          width: "300px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <CardMedia
-          component="img"
-          height="250"
-          image={
-            "https://res.cloudinary.com/dndx9szw0/image/upload/t_Facebook ad/v1685723221/Runix%20Logos/AdobeStock_136888535_myml6n.jpg"
-          }
-          alt="beautiful home"
-        />
-        <CardContent>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardHeader title="Healthy Home Package"></CardHeader>
-            <FormControlLabel
-              label="Include in Plan"
-              control={
-                <Checkbox
-                  onChange={handleHealthyHomePlanChecked}
-                  checked={healthyHomeService}
-                />
-              }
-            />
-          </Box>
-        </CardContent>
-        <CardActionArea>
-          <Accordion>
-            <AccordionSummary
-              sx={{
-                backgroundColor: "white",
-                "&:hover": {
-                  backgroundColor: "primary.main",
-                  color: "secondary.main",
-                },
-              }}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography>Summary of Services</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {property["Healthy Home Tasks"].map((service) => {
-                return <Typography variant="body2">• {service}</Typography>;
-              })}
-            </AccordionDetails>
-          </Accordion>
-        </CardActionArea>
-      </Card>
-    );
-  };
-
-  const essentialsCard = () => {
-    return (
-      <Card
-        sx={{
-          margin: "10px",
-          width: "300px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <CardMedia
-          component="img"
-          height="250"
-          image={
-            "https://res.cloudinary.com/dndx9szw0/image/upload/c_lfill,g_center,h_1080,w_1080,y_0/v1685724564/Runix%20Logos/AdobeStock_402251354_mhxgik.jpg"
-          }
-          alt="air filters"
-        />
-        <CardContent>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardHeader title="Essentials Package"></CardHeader>
-            <FormControlLabel
-              label="Include in Plan"
-              control={
-                <Checkbox
-                  onChange={handleEssentialPlanChecked}
-                  checked={essentialsService}
-                />
-              }
-            />
-          </Box>
-        </CardContent>
-        <CardActionArea>
-          <Accordion>
-            <AccordionSummary
-              sx={{
-                backgroundColor: "white",
-                "&:hover": {
-                  backgroundColor: "primary.main",
-                  color: "secondary.main",
-                },
-              }}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography>Summary of Services</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {property["Essentials Tasks"].map((service) => {
-                return <Typography variant="body2">• {service}</Typography>;
-              })}
-            </AccordionDetails>
-          </Accordion>
-        </CardActionArea>
-      </Card>
-    );
-  };
-
   const propertyName = property ? property["Property Name"] : "";
   const customerName = property ? property["Customer Name"][0] : "";
 
@@ -502,10 +439,15 @@ const Signup = () => {
           {propertyName}
         </Typography>
 
-        <Typography variant="h6" sx={{ marginTop: "40px" }}>
-          My Service Subscriptions
+        <Typography
+          variant="h6"
+          sx={{ marginTop: "40px", textAlign: "center" }}
+        >
+          Get <strong>25% off</strong> your first service for all services in
+          July!
         </Typography>
-        <Box
+        <Quote tasks={PropertyTasks} />
+        {/* <Box
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -513,15 +455,29 @@ const Signup = () => {
             justifyContent: "center",
           }}
         >
-          {healthyHomeCard()}
-          {essentialsCard()}
-        </Box>
+          <SignupCard
+            listOfTasks={HealthyHomeTasks as PropertyTaskType[]}
+            handleFrequencyChange={handleFrequencyChange}
+            handleQuantityChange={handleQuantityChange}
+            selectedTasks={selectedHealthyHomeTasks}
+            imageUrl="https://res.cloudinary.com/dndx9szw0/image/upload/t_Facebook ad/v1685723221/Runix%20Logos/AdobeStock_136888535_myml6n.jpg"
+            cardHeaderTitle="Healthy Home Services"
+          />
+          <SignupCard
+            listOfTasks={EssentialsTasks as PropertyTaskType[]}
+            handleFrequencyChange={handleFrequencyChange}
+            handleQuantityChange={handleQuantityChange}
+            selectedTasks={selectedEssentialTasks}
+            imageUrl="https://res.cloudinary.com/dndx9szw0/image/upload/c_lfill,g_center,h_1080,w_1080,y_0/v1685724564/Runix%20Logos/AdobeStock_402251354_mhxgik.jpg"
+            cardHeaderTitle="Essential Services"
+          />
+        </Box> */}
         <SignupCard
           listOfTasks={AdditionalTasks as PropertyTaskType[]}
           handleFrequencyChange={handleFrequencyChange}
           handleQuantityChange={handleQuantityChange}
-          selectedTasks={selectedAddons}
-          imageUrl=""
+          selectedTasks={selectedAdditionalTasks}
+          imageUrl="https://res.cloudinary.com/dndx9szw0/image/upload/c_lfill,g_center,h_1080,w_1080,y_0/v1687666364/Runix%20Services/IMG_6991_mloyiw.jpg"
           cardHeaderTitle="Additional Services"
         />
         <Box
@@ -582,7 +538,7 @@ const Signup = () => {
         />
       </Container>
       <Backdrop
-        sx={{ color: "#fff" }}
+        sx={{ color: "#fff", zIndex: 3 }}
         open={loading}
         // onClick={handleClose}
       >
