@@ -8,7 +8,7 @@ export const AfterSignUp = () => {
           width: "100%",
           backgroundColor: "secondary.main",
           paddingTop: "60px",
-          paddingBottom: "250px",
+          paddingBottom: "500px",
         }}
       >
         <Container

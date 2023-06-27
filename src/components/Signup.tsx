@@ -19,6 +19,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { SignupCard } from "./signup/SignupCard";
 import { Quote } from "./signup/Quote";
+import { htmlEmail } from "./signup/htmlEmail";
+
+export type selectedAdditionalTasks = {
+  name: string;
+  quantity: number;
+  frequency: number;
+  memberPrice: number;
+  nonMemberPrice: number;
+  result: number;
+};
 
 type updatedFormStates = {
   name: string;
@@ -211,7 +221,19 @@ const Signup = () => {
   let healthyHomePrice = property ? property["Healthy Home Annual"] : 0;
   let essentialsPrice = property ? property["Essentials Annual"] : 0;
 
+  let planName = essentialsService
+    ? "Essentials Plan"
+    : healthyHomeService
+    ? "Healthy Home Plan"
+    : "Healthy Home + Essentials Plan";
+
   const handleSubmit = () => {
+    if (!customerAgrees || selectedDateTime?.isBefore(dayjs("2011-15-31"))) {
+      window.alert(
+        "Please agree to the terms and conditions and verify that you have chosen a valid date before submitting."
+      );
+      return;
+    }
     let selectedAddOnsAsString = "\n";
 
     selectedAdditionalTasks
@@ -249,14 +271,47 @@ const Signup = () => {
     `,
     };
 
-    postNewCustomerSignUp(data);
+    let bothPlans = PropertyTasks.filter((x) =>
+      x.fields.PlanName[0].includes("1") || x.fields.PlanName[0].includes("2")
+        ? true
+        : false
+    );
+
+    let healthyHomePlanDetails = PropertyTasks.filter((x) =>
+      x.fields.PlanName[0].includes("1")
+    );
+    let essentialsPlanDetails = PropertyTasks.filter((x) =>
+      x.fields.PlanName[0].includes("2")
+    );
+
+    let planDetails = essentialsService
+      ? essentialsPlanDetails
+      : healthyHomeService
+      ? healthyHomePlanDetails
+      : bothPlans;
+
+    let data2 = {
+      subject: "Welcome to Runix Home Services",
+      body: htmlEmail(
+        planName,
+        planDetails,
+        selectedAdditionalTasks,
+        currencyFormatter.format(totalQuarterlyPriceOfSelectedService),
+        currencyFormatter.format(totalQuarterlyPriceOfSelectedService - 25),
+        selectedDateTime?.format("MM-DD-YYYY") as string
+      ),
+      to: property.Email,
+    };
+
+    postNewCustomerSignUp(data2);
     navigate("/signup/complete");
   };
 
   const postNewCustomerSignUp = async (data: FormType) => {
     try {
       let res = await axios.post(
-        "https://sendmaintome-ftozsj74aa-uc.a.run.app",
+        // "https://sendmaintome-ftozsj74aa-uc.a.run.app"
+        "http://127.0.0.1:5002/runix-home-services/us-central1/sendMainToMe",
         data
       );
     } catch (error: any) {}
@@ -265,13 +320,16 @@ const Signup = () => {
   const getPropertyTasks = async (propertyRecordID: string) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyTasks?propertyRecordID=${propertyRecordID}`
+        // `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyTasks?propertyRecordID=${propertyRecordID}`
+        `https://getpropertytasks-ftozsj74aa-uc.a.run.app?propertyRecordID=${propertyRecordID}`
       );
       let propertyTasks: PropertyTaskType[] = response.data;
       setPropertyTasks(propertyTasks);
 
       let additionalTasks = propertyTasks.filter((propertyTask) =>
-        propertyTask.fields.PlanName[0].includes("4")
+        propertyTask?.fields?.PlanName?.length > 0
+          ? propertyTask.fields?.PlanName[0]?.includes("4")
+          : false
       );
 
       setAdditionalTasks(additionalTasks);
@@ -305,12 +363,6 @@ const Signup = () => {
       );
       if (response.data.fields) {
         setProperty(response.data.fields);
-        setEssentialsService(
-          response.data.fields.AssumeEssentialsPlan ? true : false
-        );
-        setHealthyHomeService(
-          response.data.fields.AssumeHealthyPlan ? true : false
-        );
         getPropertyTasks(response.data.fields.recordId);
         setLoading(false);
       }
