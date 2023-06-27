@@ -47,7 +47,7 @@ export const QuarterQuote = (props: Props) => {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body2"
                   sx={{ textAlign: "Center", margin: "10px" }}
                 >
                   {task.fields.Task}
@@ -60,60 +60,60 @@ export const QuarterQuote = (props: Props) => {
                   backgroundColor: "white",
                 }}
               >
-                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {task.fields.PlanName[0].includes("1") ? (
-                      <CheckCircleIcon />
-                    ) : (
-                      ""
-                    )}
-                  </Box>
+                <Grid
+                  xs={4}
+                  sx={{
+                    border: 1,
+                    borderColor: "#889696",
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {task.fields.PlanName[0].includes("1") ? (
+                    <CheckCircleIcon sx={{ color: "green", margin: "3px" }} />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
-                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      height: "30px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>
-                      {task.fields.PlanName[0].includes("2") ? (
-                        <CheckCircleIcon />
-                      ) : (
-                        ""
-                      )}
-                    </Typography>
-                  </Box>
+                <Grid
+                  xs={4}
+                  sx={{
+                    border: 1,
+                    borderColor: "#889696",
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {task.fields.PlanName[0].includes("2") ? (
+                    <CheckCircleIcon sx={{ color: "green", margin: "3px" }} />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
-                <Grid xs={4} sx={{ border: 1, borderColor: "#889696" }}>
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {task.fields.PlanName[0].includes("1") ||
-                    task.fields.PlanName[0].includes("2") ? (
-                      <CheckCircleIcon />
-                    ) : (
-                      ""
-                    )}
-                  </Box>
+                <Grid
+                  xs={4}
+                  sx={{
+                    border: 1,
+                    borderColor: "#889696",
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {task.fields.PlanName[0].includes("1") ||
+                  task.fields.PlanName[0].includes("2") ? (
+                    <CheckCircleIcon sx={{ color: "green", margin: "3px" }} />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
               </Grid>
             </Box>

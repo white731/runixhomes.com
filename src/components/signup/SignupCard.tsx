@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Container,
 } from "@mui/material";
 import { PropertyTaskType, SelectedTaskType } from "../../types/Types";
 
@@ -27,8 +28,6 @@ export type SignupCardProps = {
 };
 
 export const SignupCard = (props: SignupCardProps) => {
-  console.log("list of tasks: ", props.listOfTasks);
-  console.log("selectedTasks: ", props.selectedTasks);
   return (
     <Card sx={{ marginTop: "30px" }}>
       <CardMedia
@@ -42,19 +41,19 @@ export const SignupCard = (props: SignupCardProps) => {
           <CardHeader title={props.cardHeaderTitle}></CardHeader>
         </Box>
       </CardContent>
-      {/* <Container maxWidth="sm">
-          <Typography
-            variant="caption"
-            sx={{ textAlign: "center", padding: "10px" }}
-          >
-            Choose from the list below any additional services you would like to
-            have done on your home. You can choose the frequency of the service
-            as well as how many items you have. For example, If you have 6
-            Exterior lights that you'd like cleaned twice a year, select
-            Semi-Annually for "How Often" and "6" for "How many" next to the
-            "Clean exterior lights" option.
-          </Typography>
-        </Container> */}
+      <Container maxWidth="sm" sx={{ marginBottom: "20px" }}>
+        <Typography
+          variant="caption"
+          sx={{ textAlign: "center", padding: "10px" }}
+        >
+          Choose from the list below any additional services you would like to
+          have done on your home. You can choose the frequency of the service as
+          well as how many items you have. For example, If you have 6 Exterior
+          lights that you'd like cleaned twice a year, select Semi-Annually for
+          "How Often" and "6" for "How many" next to the "Clean exterior lights"
+          option.
+        </Typography>
+      </Container>
       <Box
         sx={{
           display: "flex",
@@ -110,11 +109,7 @@ export const SignupCard = (props: SignupCardProps) => {
               }}
             >
               <Select
-                defaultValue={
-                  !service.fields.PlanName[0].includes("4")
-                    ? props.selectedTasks[index].frequency
-                    : 0
-                }
+                defaultValue={0}
                 size="small"
                 onChange={(e: any) => {
                   props.handleFrequencyChange(index, e.target.value);

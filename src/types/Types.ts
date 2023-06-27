@@ -8,14 +8,14 @@ export type PropertyType = {
   Customer: string[];
   "Customer Name": string[];
   Email: string[];
-  "Essentials Monthly": number;
+  "Essentials Annual": number;
   "Essentials Tasks": string[];
   "Estimate #": number;
   "Estimate Link": string;
   Estimates: any[]; // Please specify the actual type for 'Estimates'
   "First Service": string[];
   "First Service Friendly": { error: string };
-  "Healthy Home Monthly": number;
+  "Healthy Home Annual": number;
   "Healthy Home Tasks": string[];
   "Healthy Home Time Expected Quarter 1": number;
   "Healthy Home Time Expected Quarter 3": number;

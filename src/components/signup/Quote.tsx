@@ -42,7 +42,7 @@ export const Quote = (props: Props) => {
           <Box
             sx={{
               textAlign: "center",
-              height: "200px",
+              height: "175px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -50,7 +50,7 @@ export const Quote = (props: Props) => {
             }}
           >
             <Typography variant="h6" sx={{ margin: "5px" }}>
-              Healthy Home
+              <strong>Healthy Home</strong>
             </Typography>
             <Box>
               <Typography>
@@ -76,7 +76,7 @@ export const Quote = (props: Props) => {
           <Box
             sx={{
               textAlign: "center",
-              height: "200px",
+              height: "175px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -84,7 +84,7 @@ export const Quote = (props: Props) => {
             }}
           >
             <Typography variant="h6" sx={{ margin: "5px" }}>
-              Essentials
+              <strong>Essentials</strong>
             </Typography>
             <Box>
               <Typography>
@@ -110,15 +110,15 @@ export const Quote = (props: Props) => {
           <Box
             sx={{
               textAlign: "center",
-              height: "200px",
+              height: "175px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h6" sx={{ margin: "5px" }}>
-              Healthy Home + Essentials
+            <Typography variant="body1" sx={{ margin: "5px" }}>
+              <strong>Healthy Home + Essentials</strong>
             </Typography>
             <Box>
               <Typography>
