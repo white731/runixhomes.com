@@ -92,8 +92,7 @@ const ServicesSection = () => {
             expandIcon={<ExpandMoreIcon />}
           >
             <Typography variant="h5">
-              <strong>Healthy Home Package</strong> - Starting at{" "}
-              <strong>$39.00</strong> per month
+              <strong>Healthy Home Package</strong>
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ padding: "16px 3px 16px 3px" }}>
@@ -163,8 +162,7 @@ const ServicesSection = () => {
             expandIcon={<ExpandMoreIcon />}
           >
             <Typography variant="h5">
-              <strong>Essentials Package</strong> - Starting at{" "}
-              <strong> $29.99</strong> per month
+              <strong>Essentials Package</strong>
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ padding: "16px 3px 16px 3px" }}>

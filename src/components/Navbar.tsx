@@ -7,15 +7,11 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import ListIcon from "@mui/icons-material/List";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import runixLogo200px from "../images/runixLogo200px.png";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import ChatIcon from "@mui/icons-material/Chat";
-import EmailIcon from "@mui/icons-material/Email";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -158,9 +154,12 @@ const Navbar = () => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={handleCallPhone} sx={{ p: 0, color: "black" }}>
+            {/* <IconButton onClick={handleCallPhone} sx={{ p: 0, color: "black" }}>
               <LocalPhoneIcon />
-            </IconButton>
+            </IconButton> */}
+            <Button onClick={handleCallPhone} variant="contained">
+              <Typography variant="h6">208 219 5001</Typography>
+            </Button>
           </Box>
         </Toolbar>
       </Container>

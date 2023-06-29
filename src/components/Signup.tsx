@@ -310,8 +310,8 @@ const Signup = () => {
   const postNewCustomerSignUp = async (data: FormType) => {
     try {
       let res = await axios.post(
-        // "https://sendmaintome-ftozsj74aa-uc.a.run.app"
-        "http://127.0.0.1:5002/runix-home-services/us-central1/sendMainToMe",
+        "https://sendmaintome-ftozsj74aa-uc.a.run.app",
+        // "http://127.0.0.1:5002/runix-home-services/us-central1/sendMainToMe",
         data
       );
     } catch (error: any) {}
@@ -401,7 +401,35 @@ const Signup = () => {
     ? essentialsPrice / 4
     : healthyHomeService
     ? healthyHomePrice / 4
-    : ((essentialsPrice + healthyHomePrice) * 0.9) / 4;
+    : bothPlansSelected
+    ? ((essentialsPrice + healthyHomePrice) * 0.9) / 4
+    : 0;
+
+  const discountComponent = () => {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "row", marginBottom: "20px" }}>
+        <Typography>Discounts:</Typography>
+        <Typography>
+          <strong>$25.00</strong>
+        </Typography>
+      </Box>
+    );
+  };
+
+  const totalComponent = () => {
+    return (
+      <>
+        <Typography>
+          Total Amount due <strong>after</strong> your first service.
+        </Typography>
+        <Typography variant="h4">
+          {currencyFormatter.format(
+            totalQuarterlyPriceOfSelectedService - 25.0
+          )}
+        </Typography>
+      </>
+    );
+  };
 
   return (
     <Box
@@ -446,11 +474,13 @@ const Signup = () => {
         <Box sx={{ display: "flex", flexDirection: "row", marginTop: "40px" }}>
           <Typography>
             {essentialsService
-              ? "Essentials Plan"
+              ? "Essentials Plan  "
               : healthyHomeService
-              ? "Healthy Home Plan"
-              : "Healthy Home + Essentials Plan"}{" "}
-            Subtotal:{" "}
+              ? "Healthy Home Plan  "
+              : bothPlansSelected
+              ? "Healthy Home + Essentials Plan  "
+              : "Please Select a plan from above.  "}
+            Subtotal:
           </Typography>
           <Typography>
             <strong>
@@ -479,10 +509,12 @@ const Signup = () => {
           >
             <Typography>
               {essentialsService
-                ? "Essentials Plan"
+                ? "Essentials Plan  "
                 : healthyHomeService
-                ? "Healthy Home Plan"
-                : "Healthy Home + Essentials Plan"}{" "}
+                ? "Healthy Home Plan  "
+                : bothPlansSelected
+                ? "Healthy Home + Essentials Plan  "
+                : "Please select a plan from above.  "}
               Total:{" "}
             </Typography>
             <Typography>
@@ -492,22 +524,9 @@ const Signup = () => {
               per Quarter
             </Typography>
           </Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "row", marginBottom: "20px" }}
-          >
-            <Typography>Discounts:</Typography>
-            <Typography>
-              <strong>$25.00</strong>
-            </Typography>
-          </Box>
-          <Typography>
-            Total Amount due <strong>after</strong> your first service.
-          </Typography>
-          <Typography variant="h4">
-            {currencyFormatter.format(
-              totalQuarterlyPriceOfSelectedService - 25.0
-            )}
-          </Typography>
+          {totalQuarterlyPriceOfSelectedService != 0 ? discountComponent() : ""}
+          {totalQuarterlyPriceOfSelectedService != 0 ? totalComponent() : ""}
+
           <br />
           <Typography>*Total Add On Amount:</Typography>
           <Typography>
