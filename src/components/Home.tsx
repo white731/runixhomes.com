@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import CallToActionSection from "./home/CallToActionSection";
 import ContactUsSection from "./home/ContactUsSection";
+import Areas from "./home/Areas";
 import RunixExperienceSection from "./home/RunixExperienceSection";
 import ServicesSection from "./home/ServicesSection";
 import WhySection from "./home/WhySection";
@@ -18,6 +19,7 @@ const Home = () => {
       <CallToActionSection />
       <WhySection />
       <ServicesSection />
+      <Areas />
       <RunixExperienceSection />
       <ContactUsSection />
     </>
