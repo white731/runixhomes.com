@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import "./App.css";
-import GoogleButton from "react-google-button";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import Login from "./components/Login";
@@ -14,6 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AfterSignUp } from "./components/AfterSignUp";
 import { AfterLearnMore } from "./components/AfterLearnMore";
+import { TaskPage } from "./components/TaskPage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -96,6 +95,10 @@ const App = () => {
               <Route path="signup/:propertyid" element={<Signup />} />
               <Route path="signup/complete" element={<AfterSignUp />} />
               <Route path="learnmore/complete" element={<AfterLearnMore />} />
+              <Route
+                path="services/tasks/:task/:task_id"
+                element={<TaskPage />}
+              />
             </Routes>
             <Footer />
           </BrowserRouter>

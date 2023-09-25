@@ -56,3 +56,39 @@ export type SelectedTaskType = {
   nonMemberPrice: number;
   result: number;
 };
+
+export type RawTaskType = {
+  fields: {
+    description: string;
+    Duration: number;
+    EssentialsPlan: boolean;
+    Estimates: string[];
+    "Explanatory Video": string;
+    Frequency: string;
+    Instructions: string;
+    Inventory: string[];
+    Items: string[];
+    "Per Service Price": number;
+    PlanName: string[];
+    Plans: string[];
+    "Property Type": string[];
+    Quarter: string[];
+    "Quarter 2": boolean;
+    "Quarter 4": boolean;
+    QuarterV1: string[];
+    "Service Price With Materials Member Price": number;
+    "Service Price With Materials Non-Member Price": number;
+    Task: string;
+    TasksVerbose: string;
+    photoCaptions: string[];
+    photoNames: string[];
+    photos: string[];
+    recordid: string;
+    urlPhotos: string[];
+    photoObjects: {
+      fields: { Name: string; url: string; caption: string };
+      id: string;
+    }[];
+  };
+  id: string;
+};

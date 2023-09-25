@@ -320,8 +320,8 @@ const Signup = () => {
   const getPropertyTasks = async (propertyRecordID: string) => {
     try {
       const response = await axios.get(
-        // `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyTasks?propertyRecordID=${propertyRecordID}`
-        `https://getpropertytasks-ftozsj74aa-uc.a.run.app?propertyRecordID=${propertyRecordID}`
+        `http://127.0.0.1:5001/runix-home-services/us-central1/getPropertyTasks?propertyRecordID=${propertyRecordID}`
+        // `https://getpropertytasks-ftozsj74aa-uc.a.run.app?propertyRecordID=${propertyRecordID}`
       );
       let propertyTasks: PropertyTaskType[] = response.data;
       setPropertyTasks(propertyTasks);
